@@ -11,18 +11,18 @@ Pair::~Pair()
 
 }
 
-Pair::setFirst(double n) {
+void Pair::setFirst(double n) {
 	first = n;
 }
 
-Pair::setSecond(double n) {
+void Pair::setSecond(double n) {
 	second = n;
 }
 
-Pair::getFirst() {
+double Pair::getFirst() {
 	return first;
 }
 
-Pair::getSecond() {
+double Pair::getSecond() {
 	return second;
 }
