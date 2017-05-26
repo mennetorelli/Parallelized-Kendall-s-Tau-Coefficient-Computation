@@ -112,7 +112,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Pair.cpp" />
-    <ClCompile Include="Step1.cpp" />
     <ClCompile Include="Step3.cpp" />
   </ItemGroup>
   <ItemGroup>
