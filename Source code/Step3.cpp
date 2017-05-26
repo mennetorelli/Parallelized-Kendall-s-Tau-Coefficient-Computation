@@ -1,7 +1,9 @@
+#include "Step2.h"
 #include <omp.h>
 #include <iostream>
 
 using namespace std;
+
 
 int main()
 {
