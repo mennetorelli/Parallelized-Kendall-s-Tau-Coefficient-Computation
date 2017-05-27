@@ -112,10 +112,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Pair.cpp" />
+    <ClCompile Include="Step1.cpp" />
     <ClCompile Include="Step3.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Pair.h" />
+    <ClInclude Include="Step1.h" />
     <ClInclude Include="Step3.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
