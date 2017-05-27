@@ -7,9 +7,7 @@
 
 using namespace std;
 
-int step3_divide(vector<Pair> pairs, vector<Pair> buffer, int n) {
-	vector<Pair> in = pairs;
-	vector<Pair> out = buffer;
+int Step3::step3_divide(vector<Pair> in, vector<Pair> out, int n) {
 	int nd = 0;
 	for (int s=0; s<n; s*=2) {
 		for (int l = 0; l<n; l = 2*s) {
@@ -19,18 +17,16 @@ int step3_divide(vector<Pair> pairs, vector<Pair> buffer, int n) {
 		}
 	swap(in, out);
 	}
-	if (pairs != in)
-		memcpy(pairs, in, n * sizeof(pairs));
 	return nd;
 }
 
-int step3_merge(vector<Pair> in, vector<Pair> out, int left, int mid, int right) {
+int Step3::step3_merge(vector<Pair> in, vector<Pair> out, int left, int mid, int right) {
 	int l = left;
 	int p = left;
 	int r = mid;
 	int nd = 0;
 	while (l < mid && r < right) {
-		if (in[r].getSecond < in[l].getSecond) {
+		if (in[r].getSecond() < in[l].getSecond()) {
 			nd = nd + mid - l;
 			out[p++] = in[r++];
 		}
@@ -44,9 +40,10 @@ int step3_merge(vector<Pair> in, vector<Pair> out, int left, int mid, int right)
 
 int main()
 {
-	#pragma omp parallel num_threads(3)
-	{
-		cout << "Hello World" << endl;
-	}
+	vector<Pair> input = { Pair(1, 2), Pair(3, 1), Pair(2, 4), Pair(1, 3) };
+	int n = input.size();
+	cout << n << endl;
+	int prova = Step3::step3_divide(input, input, n);
+	cout << "prova" << endl;
 	return 0;
 }
