@@ -1,11 +1,12 @@
 #include "Step3.h"
-#include "Pair.h"
-#include <omp.h>
-#include <iostream>
-#include <vector>
-#include <algorithm>
 
-using namespace std;
+Step3::Step3()
+{
+}
+
+Step3::~Step3()
+{
+}
 
 int Step3::step3_divide(vector<Pair> in, vector<Pair> out, int n) {
 	int nd = 0;
@@ -13,7 +14,7 @@ int Step3::step3_divide(vector<Pair> in, vector<Pair> out, int n) {
 		for (int l = 0; l<n; l = 2*s) {
 			int m = min(l + s, n);
 			int r = min(l + 2 * s, n);
-			nd += step3_merge(in, out, l, m, r);
+			nd += Step3::step3_merge(in, out, l, m, r);
 		}
 	swap(in, out);
 	}
@@ -38,11 +39,12 @@ int Step3::step3_merge(vector<Pair> in, vector<Pair> out, int left, int mid, int
 
 /*int main()
 {
-	Step3 step3 = Step3();
-	vector<Pair> input = { Pair(1, 2), Pair(2, 3), Pair(2, 2), Pair(3, 1) };
+	Step3 step3;
+	vector<Pair> input = { Pair(1, 2), Pair(2, 2), Pair(2, 3), Pair(3, 1) };
 	int n = input.size();
 	cout << n << endl;
 	int prova = step3.step3_divide(input, input, n);
 	cout << prova << endl;
+	system("pause");
 	return 0;
 }*/

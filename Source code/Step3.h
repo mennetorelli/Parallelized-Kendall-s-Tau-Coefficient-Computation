@@ -1,11 +1,16 @@
 #pragma once
+
 #include "Pair.h"
+#include "Pair.h"
+#include <omp.h>
+#include <iostream>
 #include <vector>
+#include <algorithm>
 
 using namespace std;
 
-#ifndef STEP3
-#define STEP3
+#ifndef STEP3_H
+#define STEP3_H
 
 class Step3
 {
@@ -20,4 +25,4 @@ private:
 	int nd;
 };
 
-#endif 
+#endif //STEP3_H
