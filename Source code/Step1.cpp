@@ -1,6 +1,5 @@
 #include "Step1.h"
-
-
+#include <iostream>
 
 Step1::Step1()
 {
@@ -12,7 +11,7 @@ Step1::~Step1()
 
 }
 
-void Step1::swap_elements(std::vector<Pair> &elements, int pLeft, int pRight) {
+void Step1::swap_elements(vector<Pair> &elements, int pLeft, int pRight) {
 	
 	Pair tmp = elements[pRight];
 	elements[pRight] = elements[pLeft];
@@ -34,7 +33,7 @@ int Step1::compare_elements(Pair pLeft, Pair pRight) {
 	return result;
 }
 
-void Step1::quicksort(std::vector<Pair> &elements, int left, int right) {
+void Step1::quicksort(vector<Pair> &elements, int left, int right) {
 
 	Pair p = elements[(left + right) / 2];
 	int l = left, r = right;
@@ -56,3 +55,17 @@ void Step1::quicksort(std::vector<Pair> &elements, int left, int right) {
 	if (l < right) quicksort(elements, l, right);
 }
 
+/*int main() {
+	Step1 step1;
+
+	vector<Pair> elements = { Pair(1,1), Pair(3,2), Pair(1,2), Pair(2,4), Pair(2,1), Pair(3,1), Pair(1,5), Pair(2,3)};
+
+	step1.quicksort(elements, 0, elements.size()-1);
+
+	for (int i = 0; i < elements.size(); i++) {
+		cout << "(" << elements[i].getFirst() << "," << elements[i].getSecond() << ")" << endl;
+	}
+
+	system("pause");
+	return 0;
+}*/

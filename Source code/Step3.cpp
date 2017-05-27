@@ -36,9 +36,7 @@ int Step3::step3_merge(vector<Pair> in, vector<Pair> out, int left, int mid, int
 	return nd;
 }
 
-
-
-int main()
+/*int main()
 {
 	Step3 step3 = Step3();
 	vector<Pair> input = { Pair(1, 2), Pair(2, 3), Pair(2, 2), Pair(3, 1) };
@@ -47,4 +45,4 @@ int main()
 	int prova = step3.step3_divide(input, input, n);
 	cout << prova << endl;
 	return 0;
-}
+}*/
