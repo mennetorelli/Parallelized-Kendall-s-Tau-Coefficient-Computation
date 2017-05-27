@@ -1,5 +1,11 @@
 #pragma once
+#include "Pair.h"
 #include <vector>
+
+using namespace std;
+
+#ifndef STEP3
+#define STEP3
 
 class Step3
 {
@@ -13,3 +19,5 @@ public:
 private:
 	int nd;
 };
+
+#endif 

@@ -23,12 +23,12 @@ int Step1::compare_elements(Pair pLeft, Pair pRight) {
 
 	int result = 0;
 
-	if (pLeft.getFirst > pRight.getFirst) result = 1;
-	if (pLeft.getFirst < pRight.getFirst) result = -1;
+	if (pLeft.getFirst() > pRight.getFirst()) result = 1;
+	if (pLeft.getFirst() < pRight.getFirst()) result = -1;
 
 	if (result == 0) {
-		if (pLeft.getSecond > pRight.getSecond) result = 1;
-		if (pLeft.getSecond < pRight.getSecond) result = -1;
+		if (pLeft.getSecond() > pRight.getSecond()) result = 1;
+		if (pLeft.getSecond() < pRight.getSecond()) result = -1;
 	}
 	
 	return result;
