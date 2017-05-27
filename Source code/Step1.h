@@ -16,5 +16,17 @@ public:
 	int compare_elements(Pair pLeft, Pair pRight);
 
 	void quicksort(vector<Pair> &elements, int left, int right);
+
+	void scan(vector<Pair> &elements, int control);
+
+	void setN1(double n);
+	double getN1();
+
+	void setN3(double n);
+	double getN3();
+
+private:
+	double n1, n3;
+
 };
 

@@ -3,12 +3,12 @@
 
 Step1::Step1()
 {
-
+	setN1(0);
+	setN3(0);
 }
 
 Step1::~Step1()
 {
-
 }
 
 void Step1::swap_elements(vector<Pair> &elements, int pLeft, int pRight) {
@@ -55,16 +55,57 @@ void Step1::quicksort(vector<Pair> &elements, int left, int right) {
 	if (l < right) quicksort(elements, l, right);
 }
 
+void Step1::scan(vector<Pair> &elements, int control) {
+
+	for (int Ni=1, Wi=1, i = 1; i < elements.size(); i++) {
+		if (elements[i].getFirst() == elements[i-1].getFirst()) {
+			Ni++;
+
+			/*if (elements[i].getSecond() == elements[i - 1].getSecond() &&
+				elements[i].getFirst() == elements[i].getSecond()) Wi++;
+			else {
+				setN3(getN3() + Wi*(Wi - 1) / 2);
+				Wi = 0;
+			}*/
+		}
+
+		else {
+			setN1(getN1() + Ni*(Ni - 1) / 2);
+			Ni = 1;
+		}
+	}
+}
+
+void Step1::setN1(double n) {
+	n1 = n;
+}
+
+double Step1::getN1() {
+	return n1;
+}
+
+void Step1::setN3(double n) {
+	n3 = n;
+}
+
+double Step1::getN3() {
+	return n3;
+}
+
 /*int main() {
 	Step1 step1;
 
-	vector<Pair> elements = { Pair(1,1), Pair(3,2), Pair(1,2), Pair(2,4), Pair(2,1), Pair(3,1), Pair(1,5), Pair(2,3)};
+	vector<Pair> elements = { Pair(4,4), Pair(1,3), Pair(2,2), Pair(1,3), Pair(3,1), Pair(1,2), Pair(3,4), Pair(2,2)};
 
 	step1.quicksort(elements, 0, elements.size()-1);
 
 	for (int i = 0; i < elements.size(); i++) {
 		cout << "(" << elements[i].getFirst() << "," << elements[i].getSecond() << ")" << endl;
 	}
+
+	step1.scan(elements, 0);
+
+	cout << "\n" << step1.getN1() << endl;
 
 	system("pause");
 	return 0;
