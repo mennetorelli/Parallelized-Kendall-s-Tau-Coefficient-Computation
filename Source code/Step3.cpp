@@ -2,12 +2,14 @@
 #include "Pair.h"
 #include <omp.h>
 #include <iostream>
+#include <vector>
+#include <algorithm>
 
 using namespace std;
 
-int Step3::step3_divide(Pair pairs[], Pair buffer[], int n) {
-	Pair in[] = pairs;
-	Pair out[] = buffer;
+int step3_divide(vector<Pair> pairs, vector<Pair> buffer, int n) {
+	vector<Pair> in = pairs;
+	vector<Pair> out = buffer;
 	int nd = 0;
 	for (int s=0; s<n; s*=2) {
 		for (int l = 0; l<n; l = 2*s) {
@@ -18,11 +20,11 @@ int Step3::step3_divide(Pair pairs[], Pair buffer[], int n) {
 	swap(in, out);
 	}
 	if (pairs != in)
-		memcpy(pairs, in, n * sizeof(*pairs));
+		memcpy(pairs, in, n * sizeof(pairs));
 	return nd;
 }
 
-int Step3::step3_merge(Pair in[], Pair out[], int left, int mid, int right) {
+int step3_merge(vector<Pair> in, vector<Pair> out, int left, int mid, int right) {
 	int l = left;
 	int p = left;
 	int r = mid;
