@@ -18,9 +18,6 @@
     <ClCompile Include="Pair.cpp">
       <Filter>File di origine</Filter>
     </ClCompile>
-    <ClCompile Include="Step3.cpp">
-      <Filter>File di origine</Filter>
-    </ClCompile>
     <ClCompile Include="Step1.cpp">
       <Filter>File di origine</Filter>
     </ClCompile>
@@ -30,9 +27,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Pair.h">
-      <Filter>File di intestazione</Filter>
-    </ClInclude>
-    <ClInclude Include="Step3.h">
       <Filter>File di intestazione</Filter>
     </ClInclude>
     <ClInclude Include="Step1.h">
