@@ -159,6 +159,43 @@ double GSE::tauB_computation(int n, double n1, double n2, double n3, int nd) {
 	return result;
 }
 
+
+void GSE::calculate_tau_b(vector<Pair> &input, GSE gse) {
+
+	int n = input.size();
+
+	gse.quicksort(input, 0, n - 1);
+
+	for (int i = 0; i < input.size(); i++) {
+		cout << "(" << input[i].getFirst() << "," << input[i].getSecond() << ") ";
+	}
+	cout << endl;
+
+	gse.scan(input, 1);
+
+	vector<Pair> buffer = input;
+	gse.setNd(gse.divide(input, buffer, n));
+
+	for (int i = 0; i < input.size(); i++) {
+		cout << "(" << input[i].getFirst() << "," << input[i].getSecond() << ") ";
+	}
+	cout << "\n" << endl;
+
+	gse.scan(input, 2);
+
+	cout << "N1:" << gse.getN1() << endl;
+	cout << "N2:" << gse.getN2() << endl;
+	cout << "N3:" << gse.getN3() << endl;
+	cout << "Nd:" << gse.getNd() << endl;
+
+	double tauB = gse.tauB_computation(n, gse.getN1(), gse.getN2(), gse.getN3(), gse.getNd());
+
+	cout << endl;
+	cout << "Kendall's tauB coefficient: " << tauB << endl;
+
+	system("pause");
+}
+
 void GSE::setN1(double n) {
 	n1 = n;
 }

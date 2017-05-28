@@ -27,10 +27,7 @@ double Naive::kendall_tau_a_naive(vector<Pair> &input, int n) {
 }
 
 
-/*int main()
-{
-	Naive naive;
-	vector<Pair> input = { Pair(1, 2), Pair(1, 3), Pair(2, 1), Pair(3, 2), Pair(2, 1), Pair(2, 2),  Pair(3, 1), Pair(4, 2) };
+void Naive::calculate_tau_a(vector<Pair> &input, Naive naive) {
 	int n = input.size();
 	for (int i = 0; i < n; i++) {
 		cout << "(" << input[i].getFirst() << "," << input[i].getSecond() << ") ";
@@ -39,5 +36,13 @@ double Naive::kendall_tau_a_naive(vector<Pair> &input, int n) {
 	double tau_a = naive.kendall_tau_a_naive(input, n);
 	cout << tau_a << endl;
 	system("pause");
+}
+
+
+/*int main()
+{
+	Naive naive;
+	vector<Pair> input = { Pair(1, 2), Pair(1, 3), Pair(2, 1), Pair(3, 2), Pair(2, 1), Pair(2, 2),  Pair(3, 1), Pair(4, 2) };
+	
 	return 0;
 }*/
