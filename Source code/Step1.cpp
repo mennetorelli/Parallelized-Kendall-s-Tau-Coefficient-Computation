@@ -134,7 +134,9 @@ int Step1::merge(vector<Pair> &input, vector<Pair> &buffer, int left, int mid, i
 int Step1::divide(vector<Pair> &input, vector<Pair> &buffer, int n) {
 	int nd = 0;
 	for (int s = 1; s < n; s *= 2) {
+		#pragma omp parallel for num_threads(4)
 		for (int l = 0; l < n; l += 2 * s) {
+			printf("Hello from thread = %d\n", omp_get_thread_num());
 			int m = min(l + s, n);
 			int r = min(l + 2 * s, n);
 			nd += Step1::merge(input, buffer, l, m, r);
@@ -199,29 +201,29 @@ int main() {
 	step1.quicksort(elements, 0, n-1);
 
 	for (int i = 0; i < elements.size(); i++) {
-		cout << "(" << elements[i].getFirst() << "," << elements[i].getSecond() << ")" << endl;
+		cout << "(" << elements[i].getFirst() << "," << elements[i].getSecond() << ") ";
 	}
-
-	cout << "\n" << endl;
+	cout << endl;
 
 	step1.scan(elements, 1);
 
 	step1.setNd(step1.divide(elements, buffer, n));
 
 	for (int i = 0; i < elements.size(); i++) {
-		cout << "(" << elements[i].getFirst() << "," << elements[i].getSecond() << ")" << endl;
+		cout << "(" << elements[i].getFirst() << "," << elements[i].getSecond() << ") ";
 	}
+	cout << "\n" << endl;
 
 	step1.scan(elements, 2);
 
-	cout << "\nN1:" << step1.getN1() << endl;
-	cout << "\nN2:" << step1.getN2() << endl;
-	cout << "\nN3:" << step1.getN3() << endl;
-	cout << "\nNd:" << step1.getNd() << endl;
+	cout << "N1:" << step1.getN1() << endl;
+	cout << "N2:" << step1.getN2() << endl;
+	cout << "N3:" << step1.getN3() << endl;
+	cout << "Nd:" << step1.getNd() << endl;
 
 	double tauB = step1.tauB_computation(n, step1.getN1(), step1.getN2(), step1.getN3(), step1.getNd());
 
-	cout << "\n" << endl;
+	cout << endl;
 	cout << "Kendall's tauB coefficient: " << tauB << endl;
 
 	system("pause");
