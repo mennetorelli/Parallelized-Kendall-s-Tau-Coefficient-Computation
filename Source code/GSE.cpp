@@ -160,35 +160,35 @@ double GSE::tauB_computation(int n, double n1, double n2, double n3, int nd) {
 }
 
 
-void GSE::calculate_tau_b(vector<Pair> &input, GSE gse) {
+void GSE::calculate_tau_b(vector<Pair> &input) {
 
 	int n = input.size();
 
-	gse.quicksort(input, 0, n - 1);
+	GSE::quicksort(input, 0, n - 1);
 
 	for (int i = 0; i < input.size(); i++) {
 		cout << "(" << input[i].getFirst() << "," << input[i].getSecond() << ") ";
 	}
 	cout << endl;
 
-	gse.scan(input, 1);
+	GSE::scan(input, 1);
 
 	vector<Pair> buffer = input;
-	gse.setNd(gse.divide(input, buffer, n));
+	GSE::setNd(GSE::divide(input, buffer, n));
 
 	for (int i = 0; i < input.size(); i++) {
 		cout << "(" << input[i].getFirst() << "," << input[i].getSecond() << ") ";
 	}
 	cout << "\n" << endl;
 
-	gse.scan(input, 2);
+	GSE::scan(input, 2);
 
-	cout << "N1:" << gse.getN1() << endl;
-	cout << "N2:" << gse.getN2() << endl;
-	cout << "N3:" << gse.getN3() << endl;
-	cout << "Nd:" << gse.getNd() << endl;
+	cout << "N1:" << GSE::getN1() << endl;
+	cout << "N2:" << GSE::getN2() << endl;
+	cout << "N3:" << GSE::getN3() << endl;
+	cout << "Nd:" << GSE::getNd() << endl;
 
-	double tauB = gse.tauB_computation(n, gse.getN1(), gse.getN2(), gse.getN3(), gse.getNd());
+	double tauB = GSE::tauB_computation(n, GSE::getN1(), GSE::getN2(), GSE::getN3(), GSE::getNd());
 
 	cout << endl;
 	cout << "Kendall's tauB coefficient: " << tauB << endl;

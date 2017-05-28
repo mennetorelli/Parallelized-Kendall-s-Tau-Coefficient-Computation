@@ -22,11 +22,11 @@ void Starter::init() {
 
 	if (method == 1) {
 		Naive naive;
-		naive.calculate_tau_a(elements, naive);
+		naive.calculate_tau_a(elements);
 	}
 	if (method == 2) {
 		GSE gse;
-		gse.calculate_tau_b(elements, gse);
+		gse.calculate_tau_b(elements);
 	}
 }
 

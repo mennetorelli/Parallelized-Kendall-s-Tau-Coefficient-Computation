@@ -29,7 +29,7 @@ public:
 
 	double tauB_computation(int n, double n1, double n2, double n3, int nd);
 
-	void calculate_tau_b(vector<Pair> &input, GSE gse);
+	void calculate_tau_b(vector<Pair> &input);
 
 	void setN1(double n);
 	double getN1();
