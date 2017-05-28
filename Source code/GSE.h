@@ -9,11 +9,11 @@
 
 using namespace std;
 
-class Step1
+class GSE
 {
 public:
-	Step1();
-	~Step1();
+	GSE();
+	~GSE();
 
 	void swap_elements(vector<Pair> &elements, int pLeft, int pRight);
 

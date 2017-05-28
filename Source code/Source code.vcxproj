@@ -114,12 +114,14 @@
   <ItemGroup>
     <ClCompile Include="Naive.cpp" />
     <ClCompile Include="Pair.cpp" />
-    <ClCompile Include="Step1.cpp" />
+    <ClCompile Include="Starter.cpp" />
+    <ClCompile Include="GSE.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Naive.h" />
     <ClInclude Include="Pair.h" />
-    <ClInclude Include="Step1.h" />
+    <ClInclude Include="Starter.h" />
+    <ClInclude Include="GSE.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
