@@ -1,10 +1,11 @@
 #include "Step1.h"
-#include <iostream>
 
 Step1::Step1()
 {
 	setN1(0);
+	setN2(0);
 	setN3(0);
+	setNd(0);
 }
 
 Step1::~Step1()
@@ -108,6 +109,54 @@ void Step1::scan(vector<Pair> &elements, int control) {
 
 }
 
+int Step1::merge(vector<Pair> &input, vector<Pair> &buffer, int left, int mid, int right) {
+	int l = left;
+	int p = left;
+	int r = mid;
+	int nd = 0;
+	while (l < mid && r < right) {
+		if (input[r].getSecond() < input[l].getSecond()) {
+			nd += mid - l;
+			buffer[p++] = input[r++];
+		}
+		else
+			buffer[p++] = input[l++];
+	}
+	while (l < mid)
+		buffer[p++] = input[l++];
+	while (r < right) {
+		nd += mid - l;
+		buffer[p++] = input[r++];
+	}
+	return nd;
+}
+
+int Step1::divide(vector<Pair> &input, vector<Pair> &buffer, int n) {
+	int nd = 0;
+	for (int s = 1; s < n; s *= 2) {
+		for (int l = 0; l < n; l += 2 * s) {
+			int m = min(l + s, n);
+			int r = min(l + 2 * s, n);
+			nd += Step1::merge(input, buffer, l, m, r);
+		}
+		swap(input, buffer);
+	}
+	return nd;
+}
+
+double Step1::tauB_computation(int n, double n1, double n2, double n3, int nd) {
+	double result;
+
+	double n0 = n*(n - 1) / 2;
+	
+	double num = n0 - n1 - n2 + n3 - 2*nd;
+	double den = sqrt((n0 - n1)*(n0 - n2));
+
+	result = num / den;
+
+	return result;
+}
+
 void Step1::setN1(double n) {
 	n1 = n;
 }
@@ -132,21 +181,48 @@ double Step1::getN3() {
 	return n3;
 }
 
+void Step1::setNd(int n) {
+	nd = n;
+}
+
+int Step1::getNd() {
+	return nd;
+}
+
 int main() {
 	Step1 step1;
 
-	vector<Pair> elements = { Pair(4,4), Pair(1,3), Pair(2,2), Pair(1,3), Pair(3,1), Pair(1,2), Pair(4,3), Pair(2,2)};
+	vector<Pair> elements = { Pair(4,4), Pair(1,3), Pair(2,2), Pair(1,3), Pair(3,1), Pair(1,2), Pair(4,3), Pair(2,2), Pair(5,2)};
+	vector<Pair> buffer = elements;
+	int n = elements.size();
 
-	step1.quicksort(elements, 0, elements.size()-1);
+	step1.quicksort(elements, 0, n-1);
 
 	for (int i = 0; i < elements.size(); i++) {
 		cout << "(" << elements[i].getFirst() << "," << elements[i].getSecond() << ")" << endl;
 	}
 
-	step1.scan(elements, 0);
+	cout << "\n" << endl;
+
+	step1.scan(elements, 1);
+
+	step1.setNd(step1.divide(elements, buffer, n));
+
+	for (int i = 0; i < elements.size(); i++) {
+		cout << "(" << elements[i].getFirst() << "," << elements[i].getSecond() << ")" << endl;
+	}
+
+	step1.scan(elements, 2);
 
 	cout << "\nN1:" << step1.getN1() << endl;
+	cout << "\nN2:" << step1.getN2() << endl;
 	cout << "\nN3:" << step1.getN3() << endl;
+	cout << "\nNd:" << step1.getNd() << endl;
+
+	double tauB = step1.tauB_computation(n, step1.getN1(), step1.getN2(), step1.getN3(), step1.getNd());
+
+	cout << "\n" << endl;
+	cout << "Kendall's tauB coefficient: " << tauB << endl;
 
 	system("pause");
 	return 0;
