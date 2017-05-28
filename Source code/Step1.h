@@ -22,11 +22,14 @@ public:
 	void setN1(double n);
 	double getN1();
 
+	void setN2(double n);
+	double getN2();
+
 	void setN3(double n);
 	double getN3();
 
 private:
-	double n1, n3;
+	double n1, n2, n3;
 
 };
 
