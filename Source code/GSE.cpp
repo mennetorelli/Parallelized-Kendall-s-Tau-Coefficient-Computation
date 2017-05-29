@@ -52,7 +52,7 @@ void GSE::quicksort(vector<Pair> &elements, int left, int right) {
 		}
 	}
 	
-	#pragma omp parallel sections |
+	#pragma omp parallel sections
 	{
 		#pragma omp section
 		if (left < r) quicksort(elements, left, r);
