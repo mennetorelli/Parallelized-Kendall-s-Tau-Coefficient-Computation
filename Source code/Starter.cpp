@@ -11,8 +11,12 @@ Starter::~Starter()
 
 
 void Starter::init() {
-	//vector<Pair> elements = { Pair(4,4), Pair(1,3), Pair(2,2), Pair(1,3), Pair(3,1), Pair(1,2), Pair(4,3), Pair(2,2), Pair(5,2) };
-	vector<Pair> elements = { Pair(1,2), Pair(2,4), Pair(5,1), Pair(3,6), Pair(4,3), Pair(6,5) };
+	vector<Pair> elements;
+	for (int i = 0; i < 1000; i++) {
+		int first = rand() % 4 + 1;
+		int second = rand() % 4 + 1;
+		elements.insert(elements.end(), Pair(first, second));
+	}
 
 	int method;
 	int num_threads;
