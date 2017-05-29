@@ -27,7 +27,7 @@ void Starter::init() {
 	}
 	if (method == 2) {
 		GSE gse;
-		gse.calculate_tau_b(elements);
+		gse.calculate_tau_b(elements, num_threads);
 	}
 }
 

@@ -134,7 +134,7 @@ int GSE::merge(vector<Pair> &input, vector<Pair> &buffer, int left, int mid, int
 int GSE::divide(vector<Pair> &input, vector<Pair> &buffer, int n) {
 	int nd = 0;
 	for (int s = 1; s < n; s *= 2) {
-		#pragma omp parallel for num_threads(4)
+		#pragma omp parallel for
 		for (int l = 0; l < n; l += 2 * s) {
 			printf("Hello from thread = %d\n", omp_get_thread_num());
 			int m = min(l + s, n);
@@ -160,7 +160,12 @@ double GSE::tauB_computation(int n, double n1, double n2, double n3, int nd) {
 }
 
 
-void GSE::calculate_tau_b(vector<Pair> &input) {
+void GSE::calculate_tau_b(vector<Pair> &input, int num_threads) {
+
+#ifdef _OPENMP
+	/* Set the number of threads */
+	omp_set_num_threads(num_threads);
+#endif
 
 	int n = input.size();
 
