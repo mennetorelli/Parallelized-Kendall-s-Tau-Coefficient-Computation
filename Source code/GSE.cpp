@@ -74,21 +74,21 @@ void GSE::scan(vector<Pair> &elements, int control) {
 				if (elements[i].getSecond() == elements[i - 1].getSecond() &&
 					elements[i - 1].getFirst() == elements[i - 1].getSecond()) Wi++;
 				else {
-					setN3(getN3() + Wi*(Wi - 1) / 2);
+					setN3(getN3() + (double) Wi*(Wi - 1) / 2);
 					Wi = 1;
 				}
 			}
 
 			else {
-				setN1(getN1() + Ni*(Ni - 1) / 2);
-				setN3(getN3() + Wi*(Wi - 1) / 2);
+				setN1(getN1() + (double) Ni*(Ni - 1) / 2);
+				setN3(getN3() + (double) Wi*(Wi - 1) / 2);
 				Ni = 1;
 				Wi = 1;
 			}
 		}
 
-		setN1(getN1() + Ni*(Ni - 1) / 2);
-		setN3(getN3() + Wi*(Wi - 1) / 2);
+		setN1(getN1() + (double) Ni*(Ni - 1) / 2);
+		setN3(getN3() + (double) Wi*(Wi - 1) / 2);
 	}
 
 
@@ -99,12 +99,12 @@ void GSE::scan(vector<Pair> &elements, int control) {
 			if (elements[i].getSecond() == elements[i - 1].getSecond()) Ni++;
 
 			else {
-				setN2(getN2() + Ni*(Ni - 1) / 2);
+				setN2(getN2() + (double) Ni*(Ni - 1) / 2);
 				Ni = 1;
 			}
 		}
 
-		setN2(getN2() + Ni*(Ni - 1) / 2);
+		setN2(getN2() + (double) Ni*(Ni - 1) / 2);
 	}
 
 }
@@ -149,12 +149,12 @@ int GSE::divide(vector<Pair> &input, vector<Pair> &buffer, int n) {
 double GSE::tauB_computation(int n, double n1, double n2, double n3, int nd) {
 	double result;
 
-	double n0 = n*(n - 1) / 2;
+	double n0 = (double) n*(n - 1) / 2;
 	
 	double num = n0 - n1 - n2 + n3 - 2*nd;
 	double den = sqrt((n0 - n1)*(n0 - n2));
 
-	result = num / den;
+	result = (double) num / den;
 
 	return result;
 }
