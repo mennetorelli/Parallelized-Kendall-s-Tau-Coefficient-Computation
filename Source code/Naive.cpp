@@ -30,12 +30,11 @@ double Naive::kendall_tau_a_naive(vector<Pair> &input, int n) {
 }
 
 void Naive::calculate_tau_a(vector<Pair> &input) {
+	double overall_start_clock = omp_get_wtime();
 	int n = input.size();
-	for (int i = 0; i < n; i++) {
-		cout << "(" << input[i].getFirst() << "," << input[i].getSecond() << ") ";
-	}
-	cout << endl;
 	double tau_a = Naive::kendall_tau_a_naive(input, n);
 	cout << "Kendall's tauB coefficient: " << tau_a << endl;
+	double overall_end_clock = omp_get_wtime();
+	cout << "Overall time: " << overall_end_clock - overall_start_clock << endl;
 	system("pause");
 }

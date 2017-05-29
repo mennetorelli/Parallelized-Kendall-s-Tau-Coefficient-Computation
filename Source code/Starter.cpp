@@ -12,7 +12,7 @@ Starter::~Starter()
 
 void Starter::init() {
 	vector<Pair> elements;
-	for (int i = 0; i < 1000; i++) {
+	for (int i = 0; i < 100000; i++) {
 		int first = rand() % 4 + 1;
 		int second = rand() % 4 + 1;
 		elements.insert(elements.end(), Pair(first, second));
@@ -24,6 +24,7 @@ void Starter::init() {
 	cin >> method;
 	cout << "insert number of threads:" << endl;
 	cin >> num_threads;
+	cout << endl;
 
 	if (method == 1) {
 		Naive naive;
