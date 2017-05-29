@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Pair.h"
-#include "naive.h"
+#include "Naive.h"
 #include "GSE.h"
 #include <vector>
 #include <omp.h>
