@@ -18,13 +18,10 @@
     <ClCompile Include="Pair.cpp">
       <Filter>File di origine</Filter>
     </ClCompile>
-    <ClCompile Include="Step3.cpp">
+    <ClCompile Include="Naive.cpp">
       <Filter>File di origine</Filter>
     </ClCompile>
     <ClCompile Include="Step1.cpp">
-      <Filter>File di origine</Filter>
-    </ClCompile>
-    <ClCompile Include="Naive.cpp">
       <Filter>File di origine</Filter>
     </ClCompile>
   </ItemGroup>
@@ -32,13 +29,10 @@
     <ClInclude Include="Pair.h">
       <Filter>File di intestazione</Filter>
     </ClInclude>
-    <ClInclude Include="Step3.h">
+    <ClInclude Include="Naive.h">
       <Filter>File di intestazione</Filter>
     </ClInclude>
     <ClInclude Include="Step1.h">
-      <Filter>File di intestazione</Filter>
-    </ClInclude>
-    <ClInclude Include="Naive.h">
       <Filter>File di intestazione</Filter>
     </ClInclude>
   </ItemGroup>
