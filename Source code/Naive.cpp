@@ -19,13 +19,15 @@ int Naive::calc_sign(Pair pair1, Pair pair2) {
 }
 
 double Naive::kendall_tau_a_naive(vector<Pair> &input, int n) {
-	int numerator = 0;
+	int num = 0;
 	for (int i = 0; i < n; i++)
-		for (int j = 1; j < n - 1; j++)
-			numerator += Naive::calc_sign(input[i], input[j]);
-	return double(numerator) / (n * (n - 1) / 2);
+		for (int j = i+1; j < n; j++)
+			num += Naive::calc_sign(input[i], input[j]);
+	
+	double result = (double) num / (n*(n - 1) / 2);
+	
+	return result;
 }
-
 
 void Naive::calculate_tau_a(vector<Pair> &input) {
 	int n = input.size();
