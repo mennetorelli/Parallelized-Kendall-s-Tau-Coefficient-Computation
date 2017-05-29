@@ -9,11 +9,11 @@
 
 using namespace std;
 
-class Step1
+class GSE
 {
 public:
-	Step1();
-	~Step1();
+	GSE();
+	~GSE();
 
 	void swap_elements(vector<Pair> &elements, int pLeft, int pRight);
 
@@ -28,6 +28,8 @@ public:
 	int merge(vector<Pair> &in, vector<Pair> &out, int left, int mid, int right);
 
 	double tauB_computation(int n, double n1, double n2, double n3, int nd);
+
+	void calculate_tau_b(vector<Pair> &input);
 
 	void setN1(double n);
 	double getN1();

@@ -19,7 +19,9 @@ public:
 	~Naive();
 
 	int calc_sign(Pair pair1, Pair pair2);
-	double Naive::kendall_tau_a_naive(vector<Pair> &input, int n);
+	double kendall_tau_a_naive(vector<Pair> &input, int n);
+
+	void calculate_tau_a(vector<Pair> &input);
 };
 
 #endif //NAIVE_H

@@ -1,6 +1,6 @@
-#include "Step1.h"
+#include "GSE.h"
 
-Step1::Step1()
+GSE::GSE()
 {
 	setN1(0);
 	setN2(0);
@@ -8,18 +8,18 @@ Step1::Step1()
 	setNd(0);
 }
 
-Step1::~Step1()
+GSE::~GSE()
 {
 }
 
-void Step1::swap_elements(vector<Pair> &elements, int pLeft, int pRight) {
+void GSE::swap_elements(vector<Pair> &elements, int pLeft, int pRight) {
 	
 	Pair tmp = elements[pRight];
 	elements[pRight] = elements[pLeft];
 	elements[pLeft] = tmp;
 }
 
-int Step1::compare_elements(Pair pLeft, Pair pRight) {
+int GSE::compare_elements(Pair pLeft, Pair pRight) {
 
 	int result = 0;
 
@@ -34,7 +34,7 @@ int Step1::compare_elements(Pair pLeft, Pair pRight) {
 	return result;
 }
 
-void Step1::quicksort(vector<Pair> &elements, int left, int right) {
+void GSE::quicksort(vector<Pair> &elements, int left, int right) {
 
 	Pair p = elements[(left + right) / 2];
 	int l = left, r = right;
@@ -56,7 +56,7 @@ void Step1::quicksort(vector<Pair> &elements, int left, int right) {
 	if (l < right) quicksort(elements, l, right);
 }
 
-void Step1::scan(vector<Pair> &elements, int control) {
+void GSE::scan(vector<Pair> &elements, int control) {
 
 	if (control != 1 && control != 2) {
 		cout << "Scan function can take only 1 or 2 as control input" << endl;
@@ -109,7 +109,7 @@ void Step1::scan(vector<Pair> &elements, int control) {
 
 }
 
-int Step1::merge(vector<Pair> &input, vector<Pair> &buffer, int left, int mid, int right) {
+int GSE::merge(vector<Pair> &input, vector<Pair> &buffer, int left, int mid, int right) {
 	int l = left;
 	int p = left;
 	int r = mid;
@@ -131,20 +131,22 @@ int Step1::merge(vector<Pair> &input, vector<Pair> &buffer, int left, int mid, i
 	return nd;
 }
 
-int Step1::divide(vector<Pair> &input, vector<Pair> &buffer, int n) {
+int GSE::divide(vector<Pair> &input, vector<Pair> &buffer, int n) {
 	int nd = 0;
 	for (int s = 1; s < n; s *= 2) {
+		#pragma omp parallel for num_threads(4)
 		for (int l = 0; l < n; l += 2 * s) {
+			printf("Hello from thread = %d\n", omp_get_thread_num());
 			int m = min(l + s, n);
 			int r = min(l + 2 * s, n);
-			nd += Step1::merge(input, buffer, l, m, r);
+			nd += GSE::merge(input, buffer, l, m, r);
 		}
 		swap(input, buffer);
 	}
 	return nd;
 }
 
-double Step1::tauB_computation(int n, double n1, double n2, double n3, int nd) {
+double GSE::tauB_computation(int n, double n1, double n2, double n3, int nd) {
 	double result;
 
 	double n0 = n*(n - 1) / 2;
@@ -157,73 +159,72 @@ double Step1::tauB_computation(int n, double n1, double n2, double n3, int nd) {
 	return result;
 }
 
-void Step1::setN1(double n) {
-	n1 = n;
-}
 
-double Step1::getN1() {
-	return n1;
-}
+void GSE::calculate_tau_b(vector<Pair> &input) {
 
-void Step1::setN2(double n) {
-	n2 = n;
-}
+	int n = input.size();
 
-double Step1::getN2() {
-	return n2;
-}
+	GSE::quicksort(input, 0, n - 1);
 
-void Step1::setN3(double n) {
-	n3 = n;
-}
-
-double Step1::getN3() {
-	return n3;
-}
-
-void Step1::setNd(int n) {
-	nd = n;
-}
-
-int Step1::getNd() {
-	return nd;
-}
-
-int main() {
-	Step1 step1;
-
-	vector<Pair> elements = { Pair(4,4), Pair(1,3), Pair(2,2), Pair(1,3), Pair(3,1), Pair(1,2), Pair(4,3), Pair(2,2), Pair(5,2)};
-	vector<Pair> buffer = elements;
-	int n = elements.size();
-
-	step1.quicksort(elements, 0, n-1);
-
-	for (int i = 0; i < elements.size(); i++) {
-		cout << "(" << elements[i].getFirst() << "," << elements[i].getSecond() << ")" << endl;
+	for (int i = 0; i < input.size(); i++) {
+		cout << "(" << input[i].getFirst() << "," << input[i].getSecond() << ") ";
 	}
+	cout << endl;
 
+	GSE::scan(input, 1);
+
+	vector<Pair> buffer = input;
+	GSE::setNd(GSE::divide(input, buffer, n));
+
+	for (int i = 0; i < input.size(); i++) {
+		cout << "(" << input[i].getFirst() << "," << input[i].getSecond() << ") ";
+	}
 	cout << "\n" << endl;
 
-	step1.scan(elements, 1);
+	GSE::scan(input, 2);
 
-	step1.setNd(step1.divide(elements, buffer, n));
+	cout << "N1:" << GSE::getN1() << endl;
+	cout << "N2:" << GSE::getN2() << endl;
+	cout << "N3:" << GSE::getN3() << endl;
+	cout << "Nd:" << GSE::getNd() << endl;
 
-	for (int i = 0; i < elements.size(); i++) {
-		cout << "(" << elements[i].getFirst() << "," << elements[i].getSecond() << ")" << endl;
-	}
+	double tauB = GSE::tauB_computation(n, GSE::getN1(), GSE::getN2(), GSE::getN3(), GSE::getNd());
 
-	step1.scan(elements, 2);
-
-	cout << "\nN1:" << step1.getN1() << endl;
-	cout << "\nN2:" << step1.getN2() << endl;
-	cout << "\nN3:" << step1.getN3() << endl;
-	cout << "\nNd:" << step1.getNd() << endl;
-
-	double tauB = step1.tauB_computation(n, step1.getN1(), step1.getN2(), step1.getN3(), step1.getNd());
-
-	cout << "\n" << endl;
+	cout << endl;
 	cout << "Kendall's tauB coefficient: " << tauB << endl;
 
 	system("pause");
-	return 0;
 }
+
+void GSE::setN1(double n) {
+	n1 = n;
+}
+
+double GSE::getN1() {
+	return n1;
+}
+
+void GSE::setN2(double n) {
+	n2 = n;
+}
+
+double GSE::getN2() {
+	return n2;
+}
+
+void GSE::setN3(double n) {
+	n3 = n;
+}
+
+double GSE::getN3() {
+	return n3;
+}
+
+void GSE::setNd(int n) {
+	nd = n;
+}
+
+int GSE::getNd() {
+	return nd;
+}
+
