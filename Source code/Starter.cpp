@@ -12,7 +12,7 @@ Starter::~Starter()
 
 void Starter::init() {
 	vector<Pair> elements;
-	for (int i = 0; i < 100000; i++) {
+	for (int i = 0; i < 10000; i++) {
 		int first = rand() % 4 + 1;
 		int second = rand() % 4 + 1;
 		elements.insert(elements.end(), Pair(first, second));
@@ -28,7 +28,7 @@ void Starter::init() {
 
 	if (method == 1) {
 		Naive naive;
-		naive.calculate_tau_a(elements);
+		naive.calculate_tau_a(elements, num_threads);
 	}
 	if (method == 2) {
 		GSE gse;

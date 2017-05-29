@@ -20,6 +20,7 @@ int Naive::calc_sign(Pair pair1, Pair pair2) {
 
 double Naive::kendall_tau_a_naive(vector<Pair> &input, int n) {
 	int num = 0;
+	#pragma omp parallel for
 	for (int i = 0; i < n; i++)
 		for (int j = i + 1; j < n; j++)
 			num += Naive::calc_sign(input[i], input[j]);
@@ -27,7 +28,13 @@ double Naive::kendall_tau_a_naive(vector<Pair> &input, int n) {
 	return result;
 }
 
-void Naive::calculate_tau_a(vector<Pair> &input) {
+void Naive::calculate_tau_a(vector<Pair> &input, int num_threads) {
+
+#ifdef _OPENMP
+	/* Set the number of threads */
+	omp_set_num_threads(num_threads);
+#endif
+
 	double overall_start_clock = omp_get_wtime();
 	
 	int n = input.size();
