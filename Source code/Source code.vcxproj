@@ -114,22 +114,14 @@
   <ItemGroup>
     <ClCompile Include="Naive.cpp" />
     <ClCompile Include="Pair.cpp" />
-<<<<<<< HEAD
-    <ClCompile Include="Step1.cpp" />
-=======
     <ClCompile Include="Starter.cpp" />
     <ClCompile Include="GSE.cpp" />
->>>>>>> 79465f0be62bb277b00a7b39ddbac1e0ad7b0789
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Naive.h" />
     <ClInclude Include="Pair.h" />
-<<<<<<< HEAD
-    <ClInclude Include="Step1.h" />
-=======
     <ClInclude Include="Starter.h" />
     <ClInclude Include="GSE.h" />
->>>>>>> 79465f0be62bb277b00a7b39ddbac1e0ad7b0789
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

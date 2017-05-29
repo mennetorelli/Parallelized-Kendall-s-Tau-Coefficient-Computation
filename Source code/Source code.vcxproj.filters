@@ -24,12 +24,9 @@
     <ClCompile Include="Starter.cpp">
       <Filter>File di origine</Filter>
     </ClCompile>
-<<<<<<< HEAD
-=======
     <ClCompile Include="GSE.cpp">
       <Filter>File di origine</Filter>
     </ClCompile>
->>>>>>> 79465f0be62bb277b00a7b39ddbac1e0ad7b0789
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Pair.h">
@@ -41,11 +38,8 @@
     <ClInclude Include="Starter.h">
       <Filter>File di intestazione</Filter>
     </ClInclude>
-<<<<<<< HEAD
-=======
     <ClInclude Include="GSE.h">
       <Filter>File di intestazione</Filter>
     </ClInclude>
->>>>>>> 79465f0be62bb277b00a7b39ddbac1e0ad7b0789
   </ItemGroup>
 </Project>
