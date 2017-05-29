@@ -11,7 +11,8 @@ Starter::~Starter()
 
 
 void Starter::init() {
-	vector<Pair> elements = { Pair(4,4), Pair(1,3), Pair(2,2), Pair(1,3), Pair(3,1), Pair(1,2), Pair(4,3), Pair(2,2), Pair(5,2) };
+	//vector<Pair> elements = { Pair(4,4), Pair(1,3), Pair(2,2), Pair(1,3), Pair(3,1), Pair(1,2), Pair(4,3), Pair(2,2), Pair(5,2) };
+	vector<Pair> elements = { Pair(2,2), Pair(1,1), Pair(3,3), Pair(5,5), Pair(4,4) };
 
 	int method;
 	int num_threads;

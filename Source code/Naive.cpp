@@ -34,6 +34,6 @@ void Naive::calculate_tau_a(vector<Pair> &input) {
 	}
 	cout << endl;
 	double tau_a = Naive::kendall_tau_a_naive(input, n);
-	cout << tau_a << endl;
+	cout << "Kendall's tauB coefficient: " << tau_a << endl;
 	system("pause");
 }
