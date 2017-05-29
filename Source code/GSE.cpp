@@ -67,6 +67,7 @@ void GSE::scan(vector<Pair> &elements, int control) {
 		int Ni = 1;
 		int Wi = 1;
 
+		#pragma omp parallel for
 		for (int i = 1; i < elements.size(); i++) {
 			if (elements[i].getFirst() == elements[i - 1].getFirst()) {
 				Ni++;
@@ -95,6 +96,7 @@ void GSE::scan(vector<Pair> &elements, int control) {
 	if (control == 2) {
 		int Ni = 1;
 
+		#pragma omp parallel for
 		for (int i = 1; i < elements.size(); i++) {
 			if (elements[i].getSecond() == elements[i - 1].getSecond()) Ni++;
 
@@ -247,4 +249,6 @@ int GSE::getNd() {
 /*for (int i = 0; i < input.size(); i++) {
 cout << "(" << input[i].getFirst() << "," << input[i].getSecond() << ") ";
 }
-cout << "\n" << endl;*/
+cout << "\n" << endl;
+
+printf("Hello from thread = %d\n", omp_get_thread_num());*/
