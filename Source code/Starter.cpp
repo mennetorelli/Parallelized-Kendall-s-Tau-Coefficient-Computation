@@ -11,8 +11,9 @@ Starter::~Starter()
 
 
 void Starter::init() {
+	srand(time(NULL));
 	vector<Pair> elements;
-	for (int i = 0; i < 1000000; i++) {
+	for (int i = 0; i < 10; i++) {
 		int first = rand() % 4 + 1;
 		int second = rand() % 4 + 1;
 		elements.insert(elements.end(), Pair(first, second));

@@ -40,7 +40,7 @@ void Naive::calculate_tau_a(vector<Pair> &input, int num_threads) {
 	int n = input.size();
 	
 	double tau_a = Naive::kendall_tau_a_naive(input, n);
-	cout << "Kendall's tauB coefficient: " << tau_a << endl;
+	cout << "Kendall's tauA coefficient: " << tau_a << endl;
 	
 	double overall_end_clock = omp_get_wtime();
 	cout << "Overall time: " << overall_end_clock - overall_start_clock << endl;
