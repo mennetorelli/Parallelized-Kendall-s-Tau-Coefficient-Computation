@@ -19,6 +19,10 @@ public:
 
 	int compare_elements(Pair pLeft, Pair pRight);
 
+	/*int GSE::partition(vector<Pair> &elements, int left, int right);*/
+
+	/*void quicksort1(vector<Pair> &elements, int left, int right);*/
+
 	void quicksort(vector<Pair> &elements, int left, int right);
 
 	void scan(vector<Pair> &elements, int control);

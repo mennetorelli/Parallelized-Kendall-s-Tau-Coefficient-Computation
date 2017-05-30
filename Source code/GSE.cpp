@@ -34,6 +34,48 @@ int GSE::compare_elements(Pair pLeft, Pair pRight) {
 	return result;
 }
 
+/*int GSE::partition(vector<Pair> &elements, int left, int right) {
+	
+	int i = left + 1;
+	int j = right;
+	Pair key = elements[left];
+	
+	while (1) {
+		while (i < right && compare_elements(key, elements[i]) != -1) i++;
+		while (compare_elements(key, elements[j]) == -1) j--;
+
+		if (i < j) {
+			Pair temp = elements[i];
+			elements[i] = elements[j];
+			elements[j] = temp;
+		}
+
+		else {
+			Pair temp = elements[left];
+			elements[left] = elements[j];
+			elements[j] = temp;
+			return j;
+		}
+	}
+}*/
+
+/*void GSE::quicksort1(vector<Pair> &elements, int left, int right) {
+	int j = partition(elements, left, right);
+
+	#pragma omp parallel sections
+	{
+		#pragma omp section
+		{
+			quicksort1(elements, left, j - 1);
+		}
+
+		#pragma omp section
+		{
+			quicksort1(elements, j+1, right);
+		}
+	}
+}*/
+
 void GSE::quicksort(vector<Pair> &elements, int left, int right) {
 
 	Pair p = elements[(left + right) / 2];
@@ -166,7 +208,6 @@ double GSE::tauB_computation(int n, double n1, double n2, double n3, int nd) {
 
 	return result;
 }
-
 
 void GSE::calculate_tau_b(vector<Pair> &input, int num_threads) {
 
