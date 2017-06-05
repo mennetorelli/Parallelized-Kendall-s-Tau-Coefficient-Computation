@@ -9,6 +9,9 @@
 #include <algorithm>
 #include <math.h>
 #include <ctime>
+#include <iostream>
+#include <fstream>
+#include <string>
 
 using namespace std;
 
@@ -19,5 +22,6 @@ public:
 	~Starter();
 
 	void init();
+	vector<vector<Pair>> Starter::parse_dataset(string filename);
 };
 
