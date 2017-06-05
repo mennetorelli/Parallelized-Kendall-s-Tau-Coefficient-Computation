@@ -209,7 +209,7 @@ double GSE::tauB_computation(int n, double n1, double n2, double n3, int nd) {
 	return result;
 }
 
-void GSE::calculate_tau_b(vector<Pair> &input, int num_threads) {
+void GSE::calculate_tau_b(vector<vector<double>> &dataset, int num_threads) {
 
 #ifdef _OPENMP
 	/* Set the number of threads */
@@ -218,23 +218,25 @@ void GSE::calculate_tau_b(vector<Pair> &input, int num_threads) {
 
 	double overall_start_clock = omp_get_wtime();
 
-	int n = input.size();
+	vector<Pair> elements = { Pair(1,2), Pair(2,1), Pair(2,2), Pair(1,1) };
+
+	int n = elements.size();
 
 	double step1_start_clock = omp_get_wtime();
-	GSE::quicksort(input, 0, n - 1);
+	GSE::quicksort(elements, 0, n - 1);
 	double step1_end_clock = omp_get_wtime();
 
 	double step2_start_clock = omp_get_wtime();
-	GSE::scan(input, 1);
+	GSE::scan(elements, 1);
 	double step2_end_clock = omp_get_wtime();
 
 	double step3_start_clock = omp_get_wtime();
-	vector<Pair> buffer = input;
-	GSE::setNd(GSE::divide(input, buffer, n));
+	vector<Pair> buffer = elements;
+	GSE::setNd(GSE::divide(elements, buffer, n));
 	double step3_end_clock = omp_get_wtime();
 
 	double step4_start_clock = omp_get_wtime();
-	GSE::scan(input, 2);
+	GSE::scan(elements, 2);
 	double step4_end_clock = omp_get_wtime();
 
 	cout << "N1:" << GSE::getN1() << endl;

@@ -21,7 +21,7 @@ public:
 	int calc_sign(Pair pair1, Pair pair2);
 	double kendall_tau_a_naive(vector<Pair> &input, int n);
 
-	void calculate_tau_a(vector<Pair> &input, int num_threads);
+	void calculate_tau_a(vector<vector<double>> &dataset, int num_threads);
 };
 
 #endif //NAIVE_H

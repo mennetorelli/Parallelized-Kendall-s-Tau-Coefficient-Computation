@@ -23,6 +23,6 @@ public:
 	~Starter();
 
 	void init();
-	vector<vector<int>> Starter::parse_dataset(string filename);
+	vector<vector<double>> Starter::parse_dataset(string filename);
 };
 

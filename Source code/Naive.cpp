@@ -28,7 +28,7 @@ double Naive::kendall_tau_a_naive(vector<Pair> &input, int n) {
 	return result;
 }
 
-void Naive::calculate_tau_a(vector<Pair> &input, int num_threads) {
+void Naive::calculate_tau_a(vector<vector<double>> &dataset, int num_threads) {
 
 #ifdef _OPENMP
 	/* Set the number of threads */
@@ -37,9 +37,11 @@ void Naive::calculate_tau_a(vector<Pair> &input, int num_threads) {
 
 	double overall_start_clock = omp_get_wtime();
 	
-	int n = input.size();
+	vector<Pair> elements = { Pair(1,2), Pair(2,1), Pair(2,2), Pair(1,1) };
+
+	int n = elements.size();
 	
-	double tau_a = Naive::kendall_tau_a_naive(input, n);
+	double tau_a = Naive::kendall_tau_a_naive(elements, n);
 	cout << "Kendall's tauA coefficient: " << tau_a << endl;
 	
 	double overall_end_clock = omp_get_wtime();
