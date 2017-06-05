@@ -12,6 +12,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <sstream>
 
 using namespace std;
 
@@ -22,6 +23,6 @@ public:
 	~Starter();
 
 	void init();
-	vector<vector<Pair>> Starter::parse_dataset(string filename);
+	vector<vector<int>> Starter::parse_dataset(string filename);
 };
 

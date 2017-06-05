@@ -20,7 +20,7 @@ void Starter::init() {
 	}*/
 	//elements = { Pair(1,2), Pair(2,1), Pair(2,2), Pair(1,1) };
 
-	vector<vector<Pair>> elements = Starter::parse_dataset("GSE3526.GPL570");
+	vector<vector<int>> elements = Starter::parse_dataset("GSE3526.GPL570");
 	int method;
 	int num_threads;
 	cout << "1: naive, 2: GSE" << endl;
@@ -41,21 +41,29 @@ void Starter::init() {
 
 }
 
-vector<vector<Pair>> Starter::parse_dataset(string filename) {
-	vector<vector<Pair>> datasets;
+vector<vector<int>> Starter::parse_dataset(string filename) {
+	vector<vector<int>> datasets;
 	string line;
 	ifstream file(filename + ".txt");
 	if (file.is_open())
 	{
 		while (getline(file, line))
 		{
-			cout << line << '\n';
+			vector<int> sample;
+			istringstream line_stream(line);
+			string token;
+			while (getline(line_stream, token, ' ')) {
+				double value = atof(token.c_str());
+				sample.insert(sample.end(), value);
+			}
+			datasets.insert(datasets.end(), sample);
+			cout << datasets.size() << " ";
 		}
-		file.close();
 	}
+	file.close();
+	
 	return datasets;
 }
-
 
 
 int main() {
