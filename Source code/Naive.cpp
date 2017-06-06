@@ -37,12 +37,21 @@ void Naive::calculate_tau_a(vector<vector<double>> &dataset, int num_threads) {
 
 	double overall_start_clock = omp_get_wtime();
 	
-	vector<Pair> elements = { Pair(1,2), Pair(2,1), Pair(2,2), Pair(1,1) };
+	vector<Pair> elements;
+	for (int i = 0; i < dataset.size(); i++) {
+		vector<double> u = dataset[i];
+		for (int j = i + 1; j < dataset.size(); j++) {
+			vector<double> v = dataset[j];
+			for (int k = 0; k < dataset[i].size(); k++) {
+				elements.insert(elements.end(), Pair(u[i], v[i]));
+			}
 
-	int n = elements.size();
-	
-	double tau_a = Naive::kendall_tau_a_naive(elements, n);
-	cout << "Kendall's tauA coefficient: " << tau_a << endl;
+			int n = elements.size();
+
+			double tau_a = Naive::kendall_tau_a_naive(elements, n);
+			cout << "Kendall's tauA coefficient: " << tau_a << endl;
+		}
+	}
 	
 	double overall_end_clock = omp_get_wtime();
 	cout << "Overall time: " << overall_end_clock - overall_start_clock << endl;

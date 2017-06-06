@@ -222,7 +222,7 @@ void GSE::calculate_tau_b(vector<vector<double>> &dataset, int num_threads) {
 	for (int i = 0; i < dataset.size(); i++) {
 		vector<double> u = dataset[i];
 		for (int j = i + 1; j < dataset.size(); j++) {
-			vector<double> v = dataset[i];
+			vector<double> v = dataset[j];
 			for (int k = 0; k < dataset[i].size(); k++) {
 				elements.insert(elements.end(), Pair(u[i], v[i]));
 			}
