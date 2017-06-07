@@ -13,11 +13,42 @@ Starter::~Starter()
 void Starter::init() {
 	srand(time(NULL));
 	vector<Pair> elements;
-	for (int i = 0; i < 100000; i++) {
+
+	/*for (int i = 0; i < 2000000; i++) {
 		int first = rand() % 100 + 1;
 		int second = rand() % 100 + 1;
 		elements.insert(elements.end(), Pair(first, second));
+	}*/
+
+	/*ofstream myfile("prova.txt");
+	for (int i = 0; i < 2000000; i++) {
+		int num = rand() % 100 + 1;
+		string line;
+		if (myfile.is_open())
+		{
+			myfile << num << " ";
+		}
 	}
+	myfile.close();*/
+
+	string line;
+	ifstream file("prova.txt");
+	if (file.is_open())
+	{
+		while (getline(file, line))
+		{
+			vector<double> sample;
+			istringstream line_stream(line);
+			string token;
+			while (getline(line_stream, token, ' ')) {
+				int first = atof(token.c_str());
+				int second = atof(token.c_str());
+				elements.insert(elements.end(), Pair(first, second));
+			}
+		}
+	}
+	file.close();
+
 
 	int method;
 	int num_threads;
