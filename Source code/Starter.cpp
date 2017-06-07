@@ -14,30 +14,23 @@ void Starter::init() {
 	srand(time(NULL));
 	vector<Pair> elements;
 
-	/*for (int i = 0; i < 2000000; i++) {
-		int first = rand() % 100 + 1;
-		int second = rand() % 100 + 1;
-		elements.insert(elements.end(), Pair(first, second));
-	}*/
-
-	/*ofstream myfile("prova.txt");
+	/*ofstream myfile("input.txt");
 	for (int i = 0; i < 2000000; i++) {
-		int num = rand() % 100 + 1;
+		int value = rand() % 100 + 1;
 		string line;
 		if (myfile.is_open())
 		{
-			myfile << num << " ";
+			myfile << value << " ";
 		}
 	}
 	myfile.close();*/
 
 	string line;
-	ifstream file("prova.txt");
+	ifstream file("input.txt");
 	if (file.is_open())
 	{
 		while (getline(file, line))
 		{
-			vector<double> sample;
 			istringstream line_stream(line);
 			string token;
 			while (getline(line_stream, token, ' ')) {
