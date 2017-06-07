@@ -9,10 +9,6 @@
 #include <algorithm>
 #include <math.h>
 #include <ctime>
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <sstream>
 
 using namespace std;
 
@@ -23,6 +19,5 @@ public:
 	~Starter();
 
 	void init();
-	vector<vector<double>> Starter::parse_dataset(string filename);
 };
 

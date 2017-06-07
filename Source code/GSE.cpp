@@ -209,7 +209,7 @@ double GSE::tauB_computation(int n, double n1, double n2, double n3, int nd) {
 	return result;
 }
 
-void GSE::calculate_tau_b(vector<vector<double>> &dataset, int num_threads) {
+void GSE::calculate_tau_b(vector<Pair> &input, int num_threads) {
 
 #ifdef _OPENMP
 	/* Set the number of threads */
@@ -217,59 +217,31 @@ void GSE::calculate_tau_b(vector<vector<double>> &dataset, int num_threads) {
 #endif
 
 	double overall_start_clock = omp_get_wtime();
+
+	int n = input.size();
+
+	GSE::quicksort(input, 0, n - 1);
+
+	GSE::scan(input, 1);
+
+	vector<Pair> buffer = input;
+	GSE::setNd(GSE::divide(input, buffer, n));
 	
-	vector<Pair> elements;
-	for (int i = 0; i < dataset.size(); i++) {
-		vector<double> u = dataset[i];
-		for (int j = i + 1; j < dataset.size(); j++) {
-			vector<double> v = dataset[j];
-			for (int k = 0; k < dataset[i].size(); k++) {
-				elements.insert(elements.end(), Pair(u[i], v[i]));
-			}
+	GSE::scan(input, 2);
+	
+	cout << "N1:" << GSE::getN1() << endl;
+	cout << "N2:" << GSE::getN2() << endl;
+	cout << "N3:" << GSE::getN3() << endl;
+	cout << "Nd:" << GSE::getNd() << endl;
 
-			int n = elements.size();
+	double tauB = GSE::tauB_computation(n, GSE::getN1(), GSE::getN2(), GSE::getN3(), GSE::getNd());
 
-			double step1_start_clock = omp_get_wtime();
-			GSE::quicksort(elements, 0, n - 1);
-			double step1_end_clock = omp_get_wtime();
-
-			double step2_start_clock = omp_get_wtime();
-			GSE::scan(elements, 1);
-			double step2_end_clock = omp_get_wtime();
-
-			double step3_start_clock = omp_get_wtime();
-			vector<Pair> buffer = elements;
-			GSE::setNd(GSE::divide(elements, buffer, n));
-			double step3_end_clock = omp_get_wtime();
-
-			double step4_start_clock = omp_get_wtime();
-			GSE::scan(elements, 2);
-			double step4_end_clock = omp_get_wtime();
-
-			cout << "N1:" << GSE::getN1() << endl;
-			cout << "N2:" << GSE::getN2() << endl;
-			cout << "N3:" << GSE::getN3() << endl;
-			cout << "Nd:" << GSE::getNd() << endl;
-
-			double tauB = GSE::tauB_computation(n, GSE::getN1(), GSE::getN2(), GSE::getN3(), GSE::getNd());
-
-			cout << endl;
-			cout << "Kendall's tauB coefficient: " << tauB << endl;
-
-			cout << endl;
-			cout << "Time for Step1:" << step1_end_clock - step1_start_clock << endl;
-			cout << "Time for Step2:" << step2_end_clock - step2_start_clock << endl;
-			cout << "Time for Step3:" << step3_end_clock - step3_start_clock << endl;
-			cout << "Time for Step4:" << step4_end_clock - step4_start_clock << endl;
-			cout << endl;
-
-			elements.clear();
-			
-		}
-	}
+	cout << endl;
+	cout << "Kendall's tauB coefficient: " << tauB << endl;
 
 	double overall_end_clock = omp_get_wtime();
 	
+	cout << endl;
 	cout << "Overall time:" << overall_end_clock - overall_start_clock << endl;
 	cout << endl;
 
