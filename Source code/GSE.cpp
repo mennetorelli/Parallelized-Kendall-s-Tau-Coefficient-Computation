@@ -220,15 +220,23 @@ void GSE::calculate_tau_b(vector<Pair> &input, int num_threads) {
 
 	int n = input.size();
 
+	double step1_start_clock = omp_get_wtime();
 	GSE::quicksort(input, 0, n - 1);
+	double step1_end_clock = omp_get_wtime();
 
+	double step2_start_clock = omp_get_wtime();
 	GSE::scan(input, 1);
+	double step2_end_clock = omp_get_wtime();
 
+	double step3_start_clock = omp_get_wtime();
 	vector<Pair> buffer = input;
 	GSE::setNd(GSE::divide(input, buffer, n));
-	
+	double step3_end_clock = omp_get_wtime();
+
+	double step4_start_clock = omp_get_wtime();
 	GSE::scan(input, 2);
-	
+	double step4_end_clock = omp_get_wtime();
+
 	cout << "N1:" << GSE::getN1() << endl;
 	cout << "N2:" << GSE::getN2() << endl;
 	cout << "N3:" << GSE::getN3() << endl;
@@ -240,8 +248,12 @@ void GSE::calculate_tau_b(vector<Pair> &input, int num_threads) {
 	cout << "Kendall's tauB coefficient: " << tauB << endl;
 
 	double overall_end_clock = omp_get_wtime();
-	
+
 	cout << endl;
+	cout << "Time for Step1:" << step1_end_clock - step1_start_clock << endl;
+	cout << "Time for Step2:" << step2_end_clock - step2_start_clock << endl;
+	cout << "Time for Step3:" << step3_end_clock - step3_start_clock << endl;
+	cout << "Time for Step4:" << step4_end_clock - step4_start_clock << endl;
 	cout << "Overall time:" << overall_end_clock - overall_start_clock << endl;
 	cout << endl;
 
