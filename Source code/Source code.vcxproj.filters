@@ -27,6 +27,9 @@
     <ClCompile Include="GSE.cpp">
       <Filter>File di origine</Filter>
     </ClCompile>
+    <ClCompile Include="GSE_simd.cpp">
+      <Filter>File di origine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Pair.h">
@@ -39,6 +42,9 @@
       <Filter>File di intestazione</Filter>
     </ClInclude>
     <ClInclude Include="GSE.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
+    <ClInclude Include="GSE_simd.h">
       <Filter>File di intestazione</Filter>
     </ClInclude>
   </ItemGroup>

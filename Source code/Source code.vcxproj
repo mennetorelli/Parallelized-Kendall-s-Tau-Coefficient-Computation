@@ -112,12 +112,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="GSE_simd.cpp" />
     <ClCompile Include="Naive.cpp" />
     <ClCompile Include="Pair.cpp" />
     <ClCompile Include="Starter.cpp" />
     <ClCompile Include="GSE.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GSE_simd.h" />
     <ClInclude Include="Naive.h" />
     <ClInclude Include="Pair.h" />
     <ClInclude Include="Starter.h" />

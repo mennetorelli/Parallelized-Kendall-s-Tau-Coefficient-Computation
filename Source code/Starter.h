@@ -3,6 +3,7 @@
 #include "Pair.h"
 #include "Naive.h"
 #include "GSE.h"
+#include "GSE_simd.h"
 #include <vector>
 #include <omp.h>
 #include <iostream>

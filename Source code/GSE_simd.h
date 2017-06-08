@@ -9,11 +9,11 @@
 
 using namespace std;
 
-class GSE
+class GSE_simd
 {
 public:
-	GSE();
-	~GSE();
+	GSE_simd();
+	~GSE_simd();
 
 	void swap_elements(vector<Pair> &elements, int pLeft, int pRight);
 
@@ -29,7 +29,7 @@ public:
 
 	double tauB_computation(int n, double n1, double n2, double n3, int nd);
 
-	void calculate_tau_b(vector<Pair> &input, int num_threads);
+	void calculate_tau_b(vector<Pair> &input);
 
 	void setN1(double n);
 	double getN1();
@@ -47,4 +47,3 @@ private:
 	double n1, n2, n3;
 	int nd;
 };
-
