@@ -15,32 +15,45 @@ void Starter::init() {
 	vector<Pair> elements;
 
 	/*ofstream myfile("input.txt");
-	for (int i = 0; i < 2000000; i++) {
+	for (int i = 0; i < 1000000; i++) {
 		int value = rand() % 100 + 1;
-		string line;
 		if (myfile.is_open())
 		{
 			myfile << value << " ";
 		}
 	}
+	myfile << endl;
+	for (int i = 0; i < 1000000; i++) {
+		int value = rand() % 100 + 1;
+		if (myfile.is_open())
+		{
+			myfile << value << " ";
+		}
+	}
+	myfile << endl;
 	myfile.close();*/
 
 	string line;
 	ifstream file("input.txt");
+	vector<vector<int>> vectors;
 	if (file.is_open())
 	{
 		while (getline(file, line))
 		{
+			vector<int> vector;
 			istringstream line_stream(line);
 			string token;
 			while (getline(line_stream, token, ' ')) {
-				int first = atof(token.c_str());
-				int second = atof(token.c_str());
-				elements.insert(elements.end(), Pair(first, second));
+				vector.insert(vector.end(), atoi(token.c_str()));
 			}
+			vectors.insert(vectors.end(), vector);
 		}
 	}
 	file.close();
+
+	for (int i = 0; i < 1000000; i++) {
+		elements.insert(elements.end(), Pair(vectors[0].at(i), vectors[1].at(i)));
+	}
 
 
 	int method;
