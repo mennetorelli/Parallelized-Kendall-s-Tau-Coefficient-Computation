@@ -34,48 +34,6 @@ int GSE::compare_elements(Pair pLeft, Pair pRight) {
 	return result;
 }
 
-/*int GSE::partition(vector<Pair> &elements, int left, int right) {
-	
-	int i = left + 1;
-	int j = right;
-	Pair key = elements[left];
-	
-	while (1) {
-		while (i < right && compare_elements(key, elements[i]) != -1) i++;
-		while (compare_elements(key, elements[j]) == -1) j--;
-
-		if (i < j) {
-			Pair temp = elements[i];
-			elements[i] = elements[j];
-			elements[j] = temp;
-		}
-
-		else {
-			Pair temp = elements[left];
-			elements[left] = elements[j];
-			elements[j] = temp;
-			return j;
-		}
-	}
-}*/
-
-/*void GSE::quicksort1(vector<Pair> &elements, int left, int right) {
-	int j = partition(elements, left, right);
-
-	#pragma omp parallel sections
-	{
-		#pragma omp section
-		{
-			quicksort1(elements, left, j - 1);
-		}
-
-		#pragma omp section
-		{
-			quicksort1(elements, j+1, right);
-		}
-	}
-}*/
-
 void GSE::quicksort(vector<Pair> &elements, int left, int right) {
 
 	Pair p = elements[(left + right) / 2];
@@ -115,8 +73,10 @@ void GSE::scan(vector<Pair> &elements, int control) {
 	if(control == 1) {
 		int Ni = 1;
 		int Wi = 1;
+		double N1 = 0;
+		double N3 = 0;
 
-		#pragma omp parallel for
+		#pragma omp parallel for firstprivate(Ni, Wi) reduction(+:N1,N3)
 		for (int i = 1; i < elements.size(); i++) {
 			if (elements[i].getFirst() == elements[i - 1].getFirst()) {
 				Ni++;
@@ -124,38 +84,46 @@ void GSE::scan(vector<Pair> &elements, int control) {
 				if (elements[i].getSecond() == elements[i - 1].getSecond() &&
 					elements[i - 1].getFirst() == elements[i - 1].getSecond()) Wi++;
 				else {
-					setN3(getN3() + (double) Wi*(Wi - 1) / 2);
+					N3 = N3 + (double) Wi*(Wi - 1) / 2;
+					//setN3(getN3() + (double) Wi*(Wi - 1) / 2);
 					Wi = 1;
 				}
 			}
 
 			else {
-				setN1(getN1() + (double) Ni*(Ni - 1) / 2);
-				setN3(getN3() + (double) Wi*(Wi - 1) / 2);
+				N1 = N1 + (double)Wi*(Wi - 1) / 2;
+				N3 = N3 + (double)Wi*(Wi - 1) / 2;
+				//setN1(getN1() + (double) Ni*(Ni - 1) / 2);
+				//setN3(getN3() + (double) Wi*(Wi - 1) / 2);
 				Ni = 1;
 				Wi = 1;
 			}
 		}
 
-		setN1(getN1() + (double) Ni*(Ni - 1) / 2);
-		setN3(getN3() + (double) Wi*(Wi - 1) / 2);
+		setN1(N1);
+		setN3(N3);
+		//setN1(getN1() + (double) Ni*(Ni - 1) / 2);
+		//setN3(getN3() + (double) Wi*(Wi - 1) / 2);
 	}
 
 
 	if (control == 2) {
 		int Ni = 1;
+		double N2 = 0;
 
-		#pragma omp parallel for
+		#pragma omp parallel for firstprivate(Ni) reduction(+:N2)
 		for (int i = 1; i < elements.size(); i++) {
 			if (elements[i].getSecond() == elements[i - 1].getSecond()) Ni++;
 
 			else {
-				setN2(getN2() + (double) Ni*(Ni - 1) / 2);
+				N2 = N2 + (double)Ni*(Ni - 1) / 2;
+				//setN2(getN2() + (double) Ni*(Ni - 1) / 2);
 				Ni = 1;
 			}
 		}
 
-		setN2(getN2() + (double) Ni*(Ni - 1) / 2);
+		setN2(N2);
+		//setN2(getN2() + (double) Ni*(Ni - 1) / 2);
 	}
 
 }
