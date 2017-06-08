@@ -76,7 +76,7 @@ void GSE::scan(vector<Pair> &elements, int control) {
 		double N1 = 0;
 		double N3 = 0;
 
-		#pragma omp parallel for firstprivate(Ni, Wi) reduction(+:N1,N3)
+		//#pragma omp parallel for
 		for (int i = 1; i < elements.size(); i++) {
 			if (elements[i].getFirst() == elements[i - 1].getFirst()) {
 				Ni++;
@@ -84,26 +84,22 @@ void GSE::scan(vector<Pair> &elements, int control) {
 				if (elements[i].getSecond() == elements[i - 1].getSecond() &&
 					elements[i - 1].getFirst() == elements[i - 1].getSecond()) Wi++;
 				else {
-					N3 = N3 + (double) Wi*(Wi - 1) / 2;
-					//setN3(getN3() + (double) Wi*(Wi - 1) / 2);
+					setN3(getN3() + (double) Wi*(Wi - 1) / 2);
 					Wi = 1;
 				}
 			}
 
 			else {
-				N1 = N1 + (double)Wi*(Wi - 1) / 2;
-				N3 = N3 + (double)Wi*(Wi - 1) / 2;
-				//setN1(getN1() + (double) Ni*(Ni - 1) / 2);
-				//setN3(getN3() + (double) Wi*(Wi - 1) / 2);
+
+				setN1(getN1() + (double) Ni*(Ni - 1) / 2);
+				setN3(getN3() + (double) Wi*(Wi - 1) / 2);
 				Ni = 1;
 				Wi = 1;
 			}
 		}
 
-		setN1(N1);
-		setN3(N3);
-		//setN1(getN1() + (double) Ni*(Ni - 1) / 2);
-		//setN3(getN3() + (double) Wi*(Wi - 1) / 2);
+		setN1(getN1() + (double) Ni*(Ni - 1) / 2);
+		setN3(getN3() + (double) Wi*(Wi - 1) / 2);
 	}
 
 
@@ -111,19 +107,17 @@ void GSE::scan(vector<Pair> &elements, int control) {
 		int Ni = 1;
 		double N2 = 0;
 
-		#pragma omp parallel for firstprivate(Ni) reduction(+:N2)
+		//#pragma omp parallel for
 		for (int i = 1; i < elements.size(); i++) {
 			if (elements[i].getSecond() == elements[i - 1].getSecond()) Ni++;
 
 			else {
-				N2 = N2 + (double)Ni*(Ni - 1) / 2;
-				//setN2(getN2() + (double) Ni*(Ni - 1) / 2);
+				setN2(getN2() + (double) Ni*(Ni - 1) / 2);
 				Ni = 1;
 			}
 		}
 
-		setN2(N2);
-		//setN2(getN2() + (double) Ni*(Ni - 1) / 2);
+		setN2(getN2() + (double) Ni*(Ni - 1) / 2);
 	}
 
 }
@@ -152,14 +146,19 @@ int GSE::merge(vector<Pair> &input, vector<Pair> &buffer, int left, int mid, int
 
 int GSE::divide(vector<Pair> &input, vector<Pair> &buffer, int n) {
 	int nd = 0;
+	#pragma omp parallel reduction(+:nd) 
+	{
 	for (int s = 1; s < n; s *= 2) {
-		#pragma omp parallel for
+		#pragma omp for
 		for (int l = 0; l < n; l += 2 * s) {
 			int m = min(l + s, n);
 			int r = min(l + 2 * s, n);
 			nd += GSE::merge(input, buffer, l, m, r);
 		}
+		#pragma omp master
 		swap(input, buffer);
+		#pragma omp barrier
+	}
 	}
 	return nd;
 }
