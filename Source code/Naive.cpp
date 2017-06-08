@@ -20,7 +20,7 @@ int Naive::calc_sign(Pair pair1, Pair pair2) {
 
 double Naive::kendall_tau_a_naive(vector<Pair> &input, int n) {
 	int num = 0;
-	#pragma omp parallel for
+	#pragma omp parallel for reduction(+:num)
 	for (int i = 0; i < n; i++)
 		for (int j = i + 1; j < n; j++)
 			num += Naive::calc_sign(input[i], input[j]);
