@@ -12,12 +12,12 @@ GSE::~GSE()
 {
 }
 
-void GSE::swap_elements(vector<Pair> &elements, int pLeft, int pRight) {
+/*void GSE::swap_elements(vector<Pair> &elements, int pLeft, int pRight) {
 	
 	Pair tmp = elements[pRight];
 	elements[pRight] = elements[pLeft];
 	elements[pLeft] = tmp;
-}
+}*/
 
 int GSE::compare_elements(Pair pLeft, Pair pRight) {
 
@@ -30,11 +30,34 @@ int GSE::compare_elements(Pair pLeft, Pair pRight) {
 		if (pLeft.getSecond() > pRight.getSecond()) result = 1;
 		if (pLeft.getSecond() < pRight.getSecond()) result = -1;
 	}
-	
+
 	return result;
 }
 
-void GSE::quicksort(vector<Pair> &elements, int left, int right) {
+int GSE::partition(vector<Pair> &elements, int p, int r) {
+	Pair pivot = elements[r];
+	int i = p - 1;
+
+	for (int j = p; j < r; j++) {
+		if (compare_elements(elements[j], pivot)!=1) {
+			// Move wall one index to the right
+			i++;
+			// Move current element to the left of the wall
+			Pair temp = elements[i];
+			elements[i] = elements[j];
+			elements[j] = temp;
+		}
+	}
+
+	// Put pivot element to the left of larger elements
+	Pair temp = elements[i + 1];
+	elements[i + 1] = elements[r];
+	elements[r] = temp;
+
+	return i + 1;
+}
+
+/*void GSE::quicksort(vector<Pair> &elements, int left, int right) {
 
 	Pair p = elements[(left + right) / 2];
 	int l = left, r = right;
@@ -61,6 +84,22 @@ void GSE::quicksort(vector<Pair> &elements, int left, int right) {
 		if (l < right) quicksort(elements, l, right);
 	}
 
+}*/
+
+void GSE::quicksort(vector<Pair> &elements, int p, int r) {
+	int q;
+
+	if (p < r) {
+		q = partition(elements, p, r);
+		#pragma omp parallel sections
+		{
+		#pragma omp section
+		quicksort(elements, p, q - 1);
+
+		#pragma omp section
+		quicksort(elements, q + 1, r);
+		}
+	}
 }
 
 void GSE::scan(vector<Pair> &elements, int control) {

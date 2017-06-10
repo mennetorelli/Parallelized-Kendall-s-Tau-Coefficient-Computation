@@ -15,16 +15,16 @@ void Starter::init() {
 	vector<Pair> elements;
 
 	/*ofstream myfile("input.txt");
-	for (int i = 0; i < 1000; i++) {
-		int value = rand() % 100 + 1;
+	for (int i = 0; i < 1000000; i++) {
+		int value = rand() % 100000 + 1;
 		if (myfile.is_open())
 		{
 			myfile << value << " ";
 		}
 	}
 	myfile << endl;
-	for (int i = 0; i < 1000; i++) {
-		int value = rand() % 100 + 1;
+	for (int i = 0; i < 1000000; i++) {
+		int value = rand() % 100000 + 1;
 		if (myfile.is_open())
 		{
 			myfile << value << " ";
@@ -51,7 +51,7 @@ void Starter::init() {
 	}
 	file.close();
 
-	for (int i = 0; i < 1000; i++) {
+	for (int i = 0; i < 1000000; i++) {
 		elements.insert(elements.end(), Pair(vectors[0].at(i), vectors[1].at(i)));
 	}
 
