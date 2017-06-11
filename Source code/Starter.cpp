@@ -11,28 +11,73 @@ Starter::~Starter()
 
 
 void Starter::init() {
-	srand(time(NULL));
 	vector<Pair> elements;
 
-	/*ofstream myfile("input.txt");
-	for (int i = 0; i < 2000000; i++) {
-		int value = rand() % 100000 + 1;
-		if (myfile.is_open())
-		{
-			myfile << value << " ";
-		}
+	string input_choice;
+	cout << "Generate new input file? (y/n) ";
+	cin >> input_choice;
+	if (input_choice == "y") {
+		Starter::generate_input_file();
 	}
-	myfile << endl;
-	for (int i = 0; i < 2000000; i++) {
-		int value = rand() % 100000 + 1;
-		if (myfile.is_open())
-		{
-			myfile << value << " ";
-		}
-	}
-	myfile << endl;
-	myfile.close();*/
+	Starter::read_input_file(elements);
 
+
+	int method;
+	int num_threads;
+	cout << endl;
+	cout << "Select method: 1) naive, 2) GSE, 3) GSE_simd ";
+	cin >> method;
+	cout << "insert number of threads: ";
+	cin >> num_threads;
+	cout << endl;
+
+
+	if (method == 1) {
+		Naive naive;
+		naive.calculate_tau_a(elements, num_threads);
+	}
+
+	if (method == 2) {
+		GSE gse;
+		gse.calculate_tau_b(elements, num_threads);
+	}
+
+	if (method == 3) {
+		GSE_simd gse_simd;
+		gse_simd.calculate_tau_b(elements, num_threads);
+	}
+}
+
+
+void Starter::generate_input_file() {
+	srand(time(NULL));
+	int vector_size;
+	cout << "Insert vector size: ";
+	cin >> vector_size;
+
+	cout << "Generating a new file..." << endl;
+	ofstream file("input.txt");
+	for (int i = 0; i < vector_size; i++) {
+		int value = rand() % 100000 + 1;
+		if (file.is_open())
+		{
+			file << value << " ";
+		}
+	}
+	file << endl;
+	for (int i = 0; i < vector_size; i++) {
+		int value = rand() % 100000 + 1;
+		if (file.is_open())
+		{
+			file << value << " ";
+		}
+	}
+	file << endl;
+	file.close();
+}
+
+void Starter::read_input_file(vector<Pair> &elements) {
+	cout << "Reading data from file..." << endl;
 	string line;
 	ifstream file("input.txt");
 	vector<vector<int>> vectors;
@@ -51,30 +96,8 @@ void Starter::init() {
 	}
 	file.close();
 
-	for (int i = 0; i < 2000000; i++) {
+	for (int i = 0; i < vectors[0].size(); i++) {
 		elements.insert(elements.end(), Pair(vectors[0].at(i), vectors[1].at(i)));
-	}
-
-
-	int method;
-	int num_threads;
-	cout << "1: naive, 2: GSE, 3: GSE_simd" << endl;
-	cin >> method;
-
-
-	if (method == 1) {
-		Naive naive;
-		naive.calculate_tau_a(elements, num_threads);
-	}
-
-	if (method == 2) {
-		GSE gse;
-		gse.calculate_tau_b(elements, num_threads);
-	}
-
-	if (method == 3) {
-		GSE_simd gse_simd;
-		gse_simd.calculate_tau_b(elements, num_threads);
 	}
 }
 

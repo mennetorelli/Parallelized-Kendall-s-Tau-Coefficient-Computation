@@ -23,5 +23,7 @@ public:
 	~Starter();
 
 	void init();
+	void generate_input_file();
+	void read_input_file(vector<Pair> &elements);
 };
 
