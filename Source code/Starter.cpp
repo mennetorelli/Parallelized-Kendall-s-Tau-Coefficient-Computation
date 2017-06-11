@@ -15,7 +15,7 @@ void Starter::init() {
 	vector<Pair> elements;
 
 	/*ofstream myfile("input.txt");
-	for (int i = 0; i < 1000000; i++) {
+	for (int i = 0; i < 2000000; i++) {
 		int value = rand() % 100000 + 1;
 		if (myfile.is_open())
 		{
@@ -23,7 +23,7 @@ void Starter::init() {
 		}
 	}
 	myfile << endl;
-	for (int i = 0; i < 1000000; i++) {
+	for (int i = 0; i < 2000000; i++) {
 		int value = rand() % 100000 + 1;
 		if (myfile.is_open())
 		{
@@ -51,7 +51,7 @@ void Starter::init() {
 	}
 	file.close();
 
-	for (int i = 0; i < 1000000; i++) {
+	for (int i = 0; i < 2000000; i++) {
 		elements.insert(elements.end(), Pair(vectors[0].at(i), vectors[1].at(i)));
 	}
 
@@ -61,11 +61,6 @@ void Starter::init() {
 	cout << "1: naive, 2: GSE, 3: GSE_simd" << endl;
 	cin >> method;
 
-	if (method == 1 || method == 2) {
-		cout << "insert number of threads:" << endl;
-		cin >> num_threads;
-	}
-	cout << endl;
 
 	if (method == 1) {
 		Naive naive;
@@ -79,7 +74,7 @@ void Starter::init() {
 
 	if (method == 3) {
 		GSE_simd gse_simd;
-		gse_simd.calculate_tau_b(elements);
+		gse_simd.calculate_tau_b(elements, num_threads);
 	}
 }
 

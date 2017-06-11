@@ -15,11 +15,11 @@ public:
 	GSE_simd();
 	~GSE_simd();
 
-	void swap_elements(vector<Pair> &elements, int pLeft, int pRight);
+	int partition(vector<Pair> &elements, int p, int r);
 
 	int compare_elements(Pair pLeft, Pair pRight);
 
-	void quicksort(vector<Pair> &elements, int left, int right);
+	void quicksort(vector<Pair> &elements, int p, int r);
 
 	void scan(vector<Pair> &elements, int control);
 
@@ -29,7 +29,7 @@ public:
 
 	double tauB_computation(int n, double n1, double n2, double n3, int nd);
 
-	void calculate_tau_b(vector<Pair> &input);
+	void calculate_tau_b(vector<Pair> &input, int num_threads);
 
 	void setN1(double n);
 	double getN1();

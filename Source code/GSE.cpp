@@ -12,12 +12,6 @@ GSE::~GSE()
 {
 }
 
-/*void GSE::swap_elements(vector<Pair> &elements, int pLeft, int pRight) {
-	
-	Pair tmp = elements[pRight];
-	elements[pRight] = elements[pLeft];
-	elements[pLeft] = tmp;
-}*/
 
 int GSE::compare_elements(Pair pLeft, Pair pRight) {
 
@@ -56,35 +50,6 @@ int GSE::partition(vector<Pair> &elements, int p, int r) {
 
 	return i + 1;
 }
-
-/*void GSE::quicksort(vector<Pair> &elements, int left, int right) {
-
-	Pair p = elements[(left + right) / 2];
-	int l = left, r = right;
-	
-	while (l <= r)
-	{
-		while (compare_elements(elements[l], p) < 0) l++;
-		while (compare_elements(elements[r], p) > 0) r--;
-
-		if (l <= r)
-		{
-			swap_elements(elements, l, r);
-			l++;
-			r--;
-		}
-	}
-	
-	#pragma omp parallel sections
-	{
-		#pragma omp section
-		if (left < r) quicksort(elements, left, r);
-
-		#pragma omp section
-		if (l < right) quicksort(elements, l, right);
-	}
-
-}*/
 
 void GSE::quicksort(vector<Pair> &elements, int p, int r) {
 	int q;

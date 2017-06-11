@@ -15,8 +15,6 @@ public:
 	GSE();
 	~GSE();
 
-	//void swap_elements(vector<Pair> &elements, int pLeft, int pRight);
-
 	int partition(vector<Pair> &elements, int p, int r);
 
 	int compare_elements(Pair pLeft, Pair pRight);

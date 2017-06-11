@@ -12,12 +12,6 @@ GSE_simd::~GSE_simd()
 {
 }
 
-void GSE_simd::swap_elements(vector<Pair> &elements, int pLeft, int pRight) {
-
-	Pair tmp = elements[pRight];
-	elements[pRight] = elements[pLeft];
-	elements[pLeft] = tmp;
-}
 
 int GSE_simd::compare_elements(Pair pLeft, Pair pRight) {
 
@@ -34,27 +28,44 @@ int GSE_simd::compare_elements(Pair pLeft, Pair pRight) {
 	return result;
 }
 
-void GSE_simd::quicksort(vector<Pair> &elements, int left, int right) {
+int GSE_simd::partition(vector<Pair> &elements, int p, int r) {
+	Pair pivot = elements[r];
+	int i = p - 1;
 
-	Pair p = elements[(left + right) / 2];
-	int l = left, r = right;
-
-	while (l <= r)
-	{
-		while (compare_elements(elements[l], p) < 0) l++;
-		while (compare_elements(elements[r], p) > 0) r--;
-
-		if (l <= r)
-		{
-			swap_elements(elements, l, r);
-			l++;
-			r--;
+	for (int j = p; j < r; j++) {
+		if (compare_elements(elements[j], pivot) != 1) {
+			// Move wall one index to the right
+			i++;
+			// Move current element to the left of the wall
+			Pair temp = elements[i];
+			elements[i] = elements[j];
+			elements[j] = temp;
 		}
 	}
 
-		if (left < r) quicksort(elements, left, r);
+	// Put pivot element to the left of larger elements
+	Pair temp = elements[i + 1];
+	elements[i + 1] = elements[r];
+	elements[r] = temp;
 
-		if (l < right) quicksort(elements, l, right);
+	return i + 1;
+}
+
+void GSE_simd::quicksort(vector<Pair> &elements, int p, int r) {
+	int q;
+
+	if (p < r) {
+		q = partition(elements, p, r);
+
+		#pragma omp parallel sections
+		{
+		#pragma omp section
+		quicksort(elements, p, q - 1);
+
+		#pragma omp section
+		quicksort(elements, q + 1, r);
+		}
+	}
 }
 
 void GSE_simd::scan(vector<Pair> &elements, int control) {
@@ -67,8 +78,7 @@ void GSE_simd::scan(vector<Pair> &elements, int control) {
 	if (control == 1) {
 		int Ni = 1;
 		int Wi = 1;
-	
-		//#pragma omp simd
+
 		for (int i = 1; i < elements.size(); i++) {
 			if (elements[i].getFirst() == elements[i - 1].getFirst()) {
 				Ni++;
@@ -97,9 +107,7 @@ void GSE_simd::scan(vector<Pair> &elements, int control) {
 
 	if (control == 2) {
 		int Ni = 1;
-		double N2 = 0;
 
-		//#pragma omp simd
 		for (int i = 1; i < elements.size(); i++) {
 			if (elements[i].getSecond() == elements[i - 1].getSecond()) Ni++;
 
@@ -137,20 +145,21 @@ int GSE_simd::merge(vector<Pair> &input, vector<Pair> &buffer, int left, int mid
 }
 
 int GSE_simd::divide(vector<Pair> &input, vector<Pair> &buffer, int n) {
-	int nd = 0; 
-	
-		for (int s = 1; s < n; s *= 2) {
-			//#pragma omp simd
-			for (int l = 0; l < n; l += 2 * s) {
-				int m = min(l + s, n);
-				int r = min(l + 2 * s, n);
-				nd += GSE_simd::merge(input, buffer, l, m, r);
-			}
-
-			swap(input, buffer);
-
+	int nd = 0;
+	#pragma omp parallel reduction(+:nd) 
+	{
+	for (int s = 1; s < n; s *= 2) {
+		#pragma omp for
+		for (int l = 0; l < n; l += 2 * s) {
+			int m = min(l + s, n);
+			int r = min(l + 2 * s, n);
+			nd += GSE_simd::merge(input, buffer, l, m, r);
 		}
-	
+		#pragma omp master
+		swap(input, buffer);
+		#pragma omp barrier
+	}
+	}
 	return nd;
 }
 
@@ -167,8 +176,14 @@ double GSE_simd::tauB_computation(int n, double n1, double n2, double n3, int nd
 	return result;
 }
 
-void GSE_simd::calculate_tau_b(vector<Pair> &input) {
+void GSE_simd::calculate_tau_b(vector<Pair> &input, int num_threads) {
 
+#ifdef _OPENMP
+	/* Set the number of threads */
+	omp_set_num_threads(num_threads);
+	omp_set_nested(1);
+	omp_set_max_active_levels(num_threads);
+#endif
 
 	double overall_start_clock = omp_get_wtime();
 
