@@ -91,6 +91,7 @@ void GSE::quicksort(vector<Pair> &elements, int p, int r) {
 
 	if (p < r) {
 		q = partition(elements, p, r);
+
 		#pragma omp parallel sections
 		{
 		#pragma omp section
@@ -215,6 +216,8 @@ void GSE::calculate_tau_b(vector<Pair> &input, int num_threads) {
 #ifdef _OPENMP
 	/* Set the number of threads */
 	omp_set_num_threads(num_threads);
+	omp_set_nested(1);
+	omp_set_max_active_levels(num_threads);
 #endif
 
 	double overall_start_clock = omp_get_wtime();
