@@ -2,6 +2,7 @@
 
 Naive::Naive()
 {
+	set_tauA(0);
 }
 
 Naive::~Naive()
@@ -18,17 +19,17 @@ int Naive::calc_sign(Pair pair1, Pair pair2) {
 		return 0;
 }
 
-double Naive::kendall_tau_a_naive(vector<Pair> &input, int n) {
+void Naive::tauA_computation(vector<Pair> &input, int n) {
 	int num = 0;
 	#pragma omp parallel for reduction(+:num)
 	for (int i = 0; i < n; i++)
 		for (int j = i + 1; j < n; j++)
 			num += Naive::calc_sign(input[i], input[j]);
 	double result = (double) num / (n*(n - 1) / 2);
-	return result;
+	Naive::set_tauA(result);
 }
 
-void Naive::calculate_tau_a(vector<Pair> &input, int num_threads) {
+void Naive::naive_algorithm(vector<Pair> &input, int num_threads) {
 
 #ifdef _OPENMP
 	/* Set the number of threads */
@@ -39,12 +40,20 @@ void Naive::calculate_tau_a(vector<Pair> &input, int num_threads) {
 	
 	int n = input.size();
 	
-	double tau_a = Naive::kendall_tau_a_naive(input, n);
-	cout << "Kendall's tauA coefficient: " << tau_a << endl;
+	Naive::tauA_computation(input, n);
+	cout << "Kendall's tauA coefficient: " << Naive::tauA << endl;
 	
 	double overall_end_clock = omp_get_wtime();
 	cout << "Overall time: " << overall_end_clock - overall_start_clock << endl;
 	cout << endl;
 
 	system("pause");
+}
+
+void Naive::set_tauA(int tauA) {
+	Naive::tauA = tauA;
+}
+
+double Naive::get_tauA() {
+	return Naive::tauA;
 }

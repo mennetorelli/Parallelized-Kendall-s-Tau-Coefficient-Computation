@@ -19,9 +19,15 @@ public:
 	~Naive();
 
 	int calc_sign(Pair pair1, Pair pair2);
-	double kendall_tau_a_naive(vector<Pair> &input, int n);
+	void tauA_computation(vector<Pair> &input, int n);
 
-	void calculate_tau_a(vector<Pair> &input, int num_threads);
+	void naive_algorithm(vector<Pair> &input, int num_threads);
+
+	void set_tauA(int tauA);
+	double get_tauA();
+
+private:
+	double tauA;
 };
 
 #endif //NAIVE_H

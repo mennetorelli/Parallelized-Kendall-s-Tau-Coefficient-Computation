@@ -2,10 +2,11 @@
 
 GSE_simd::GSE_simd()
 {
-	setN1(0);
-	setN2(0);
-	setN3(0);
-	setNd(0);
+	set_n1(0);
+	set_n2(0);
+	set_n3(0);
+	set_nd(0);
+	set_tauB(0);
 }
 
 GSE_simd::~GSE_simd()
@@ -13,27 +14,37 @@ GSE_simd::~GSE_simd()
 }
 
 
-int GSE_simd::compare_elements(Pair pLeft, Pair pRight) {
+/**
+Compares first and second element in a pair
+*/
+int GSE_simd::step1_compare_elements(Pair pLeft, Pair pRight) {
 
 	int result = 0;
 
-	if (pLeft.getFirst() > pRight.getFirst()) result = 1;
-	if (pLeft.getFirst() < pRight.getFirst()) result = -1;
+	if (pLeft.getFirst() > pRight.getFirst())
+		result = 1;
+	if (pLeft.getFirst() < pRight.getFirst())
+		result = -1;
 
 	if (result == 0) {
-		if (pLeft.getSecond() > pRight.getSecond()) result = 1;
-		if (pLeft.getSecond() < pRight.getSecond()) result = -1;
+		if (pLeft.getSecond() > pRight.getSecond())
+			result = 1;
+		if (pLeft.getSecond() < pRight.getSecond())
+			result = -1;
 	}
 
 	return result;
 }
 
-int GSE_simd::partition(vector<Pair> &elements, int p, int r) {
+/**
+Partition step of quicksort
+*/
+int GSE_simd::step1_partition(vector<Pair> &elements, int p, int r) {
 	Pair pivot = elements[r];
 	int i = p - 1;
 
 	for (int j = p; j < r; j++) {
-		if (compare_elements(elements[j], pivot) != 1) {
+		if (step1_compare_elements(elements[j], pivot) != 1) {
 			// Move wall one index to the right
 			i++;
 			// Move current element to the left of the wall
@@ -51,78 +62,87 @@ int GSE_simd::partition(vector<Pair> &elements, int p, int r) {
 	return i + 1;
 }
 
-void GSE_simd::quicksort(vector<Pair> &elements, int p, int r) {
+/**
+Quicksort algorithm
+*/
+void GSE_simd::step1_quicksort(vector<Pair> &elements, int p, int r) {
 	int q;
 
 	if (p < r) {
-		q = partition(elements, p, r);
+		q = step1_partition(elements, p, r);
 
 		#pragma omp parallel sections
 		{
-		#pragma omp section
-		quicksort(elements, p, q - 1);
+			#pragma omp section
+			step1_quicksort(elements, p, q - 1);
 
-		#pragma omp section
-		quicksort(elements, q + 1, r);
+			#pragma omp section
+			step1_quicksort(elements, q + 1, r);
 		}
 	}
 }
 
-void GSE_simd::scan(vector<Pair> &elements, int control) {
+/**
+  Scans the vector of pairs sorted by the first element (and in case of equality, by the second)
+  to compute n1 and n3
+*/
+void GSE_simd::step2_scan(vector<Pair> &elements) {
+	int ni = 1;
+	int wi = 1;
 
-	if (control != 1 && control != 2) {
-		cout << "Scan function can take only 1 or 2 as control input" << endl;
-		return;
-	}
+	for (int i = 1; i < elements.size(); i++) {
+		// counts the quantity of elements in each group
+		if (elements[i].getFirst() == elements[i - 1].getFirst()) {
+			ni++;
 
-	if (control == 1) {
-		int Ni = 1;
-		int Wi = 1;
-
-		for (int i = 1; i < elements.size(); i++) {
-			if (elements[i].getFirst() == elements[i - 1].getFirst()) {
-				Ni++;
-
-				if (elements[i].getSecond() == elements[i - 1].getSecond() &&
-					elements[i - 1].getFirst() == elements[i - 1].getSecond()) Wi++;
-				else {
-					setN3(getN3() + (double)Wi*(Wi - 1) / 2);
-					Wi = 1;
-				}
-			}
-
+			// counts the tied elements
+			if (elements[i].getSecond() == elements[i - 1].getSecond() &&
+				elements[i - 1].getFirst() == elements[i - 1].getSecond())
+				wi++;
+			// sets the parameters and restarts the counters
 			else {
-
-				setN1(getN1() + (double)Ni*(Ni - 1) / 2);
-				setN3(getN3() + (double)Wi*(Wi - 1) / 2);
-				Ni = 1;
-				Wi = 1;
+				set_n3(get_n3() + (double)wi*(wi - 1) / 2);
+				wi = 1;
 			}
 		}
 
-		setN1(getN1() + (double)Ni*(Ni - 1) / 2);
-		setN3(getN3() + (double)Wi*(Wi - 1) / 2);
-	}
-
-
-	if (control == 2) {
-		int Ni = 1;
-
-		for (int i = 1; i < elements.size(); i++) {
-			if (elements[i].getSecond() == elements[i - 1].getSecond()) Ni++;
-
-			else {
-				setN2(getN2() + (double)Ni*(Ni - 1) / 2);
-				Ni = 1;
-			}
+		// sets the parameters and restarts the counters
+		else {
+			set_n1(get_n1() + (double)ni*(ni - 1) / 2);
+			set_n3(get_n3() + (double)wi*(wi - 1) / 2);
+			ni = 1;
+			wi = 1;
 		}
-
-		setN2(getN2() + (double)Ni*(Ni - 1) / 2);
 	}
 
+	set_n1(get_n1() + (double)ni*(ni - 1) / 2);
+	set_n3(get_n3() + (double)wi*(wi - 1) / 2);
 }
 
-int GSE_simd::merge(vector<Pair> &input, vector<Pair> &buffer, int left, int mid, int right) {
+/**
+  Scans the vector of pairs sorted by the second element to compute n2
+*/
+void GSE_simd::step4_scan(vector<Pair> &elements) {
+	int ni = 1;
+
+	// counts the quantity of elements in each group
+	for (int i = 1; i < elements.size(); i++) {
+		if (elements[i].getSecond() == elements[i - 1].getSecond()) ni++;
+
+		// sets the parameters and restarts the counters
+		else {
+			set_n2(get_n2() + (double)ni*(ni - 1) / 2);
+			ni = 1;
+		}
+	}
+
+	set_n2(get_n2() + (double)ni*(ni - 1) / 2);
+}
+
+/**
+  Merges the sorted subvectors
+*/
+int GSE_simd::step3_merge(vector<Pair> &input, vector<Pair> &buffer, int left, int mid, int right) {
 	int l = left;
 	int p = left;
 	int r = mid;
@@ -144,26 +164,33 @@ int GSE_simd::merge(vector<Pair> &input, vector<Pair> &buffer, int left, int mid
 	return nd;
 }
 
-int GSE_simd::divide(vector<Pair> &input, vector<Pair> &buffer, int n) {
+/**
+  Bottom-up mergesort implementation
+*/
+void GSE_simd::step3_divide(vector<Pair> &input, int n) {
+	vector<Pair> buffer = input;
 	int nd = 0;
 	#pragma omp parallel reduction(+:nd) 
 	{
-	for (int s = 1; s < n; s *= 2) {
-		#pragma omp for
-		for (int l = 0; l < n; l += 2 * s) {
-			int m = min(l + s, n);
-			int r = min(l + 2 * s, n);
-			nd += GSE_simd::merge(input, buffer, l, m, r);
+		for (int s = 1; s < n; s *= 2) {
+			#pragma omp for simd
+			for (int l = 0; l < n; l += 2 * s) {
+				int m = min(l + s, n);
+				int r = min(l + 2 * s, n);
+				nd += GSE_simd::step3_merge(input, buffer, l, m, r);
+			}
+			#pragma omp master
+			swap(input, buffer);
+			#pragma omp barrier
 		}
-		#pragma omp master
-		swap(input, buffer);
-		#pragma omp barrier
 	}
-	}
-	return nd;
+	GSE_simd::set_nd(nd);
 }
 
-double GSE_simd::tauB_computation(int n, double n1, double n2, double n3, int nd) {
+/**
+  Computes the value of TauB
+*/
+void GSE_simd::step5_tauB_computation(int n, double n1, double n2, double n3, int nd) {
 	double result;
 
 	double n0 = (double)n*(n - 1) / 2;
@@ -173,14 +200,18 @@ double GSE_simd::tauB_computation(int n, double n1, double n2, double n3, int nd
 
 	result = (double)num / den;
 
-	return result;
+	GSE_simd::set_tauB(result);
 }
 
-void GSE_simd::calculate_tau_b(vector<Pair> &input, int num_threads) {
+/**
+  Manages the steps of the algorithm
+*/
+void GSE_simd::GSE_algorithm(vector<Pair> &input, int num_threads) {
 
 #ifdef _OPENMP
-	/* Set the number of threads */
+	// Set the number of threads
 	omp_set_num_threads(num_threads);
+	// Enable nested parallelism
 	omp_set_nested(1);
 	omp_set_max_active_levels(num_threads);
 #endif
@@ -190,73 +221,71 @@ void GSE_simd::calculate_tau_b(vector<Pair> &input, int num_threads) {
 	int n = input.size();
 
 	double step1_start_clock = omp_get_wtime();
-	GSE_simd::quicksort(input, 0, n - 1);
+	GSE_simd::step1_quicksort(input, 0, n - 1);
 	double step1_end_clock = omp_get_wtime();
 
-	double step2_start_clock = omp_get_wtime();
-	GSE_simd::scan(input, 1);
-	double step2_end_clock = omp_get_wtime();
+	GSE_simd::step2_scan(input);
 
 	double step3_start_clock = omp_get_wtime();
-	vector<Pair> buffer = input;
-	GSE_simd::setNd(GSE_simd::divide(input, buffer, n));
+	GSE_simd::step3_divide(input, n);
 	double step3_end_clock = omp_get_wtime();
 
-	double step4_start_clock = omp_get_wtime();
-	GSE_simd::scan(input, 2);
-	double step4_end_clock = omp_get_wtime();
+	GSE_simd::step4_scan(input);
 
-	cout << "N1:" << GSE_simd::getN1() << endl;
-	cout << "N2:" << GSE_simd::getN2() << endl;
-	cout << "N3:" << GSE_simd::getN3() << endl;
-	cout << "Nd:" << GSE_simd::getNd() << endl;
+	GSE_simd::step5_tauB_computation(n, GSE_simd::n1, GSE_simd::n2, GSE_simd::n3, GSE_simd::nd);
 
-	double tauB = GSE_simd::tauB_computation(n, GSE_simd::getN1(), GSE_simd::getN2(), GSE_simd::getN3(), GSE_simd::getNd());
+	cout << "n1: " << GSE_simd::n1 << ", " << "n2: " << GSE_simd::n2 << ", "
+		<< "n3: " << GSE_simd::n3 << ", " << "nd: " << GSE_simd::nd << endl;
 
-	cout << endl;
-	cout << "Kendall's tauB coefficient: " << tauB << endl;
+	cout << "Kendall's tauB coefficient: " << GSE_simd::tauB << endl;
 
 	double overall_end_clock = omp_get_wtime();
 
 	cout << endl;
 	cout << "Time for Step1:" << step1_end_clock - step1_start_clock << endl;
-	cout << "Time for Step2:" << step2_end_clock - step2_start_clock << endl;
 	cout << "Time for Step3:" << step3_end_clock - step3_start_clock << endl;
-	cout << "Time for Step4:" << step4_end_clock - step4_start_clock << endl;
 	cout << "Overall time:" << overall_end_clock - overall_start_clock << endl;
 	cout << endl;
 
 	system("pause");
 }
 
-void GSE_simd::setN1(double n) {
-	n1 = n;
+void GSE_simd::set_n1(double n1) {
+	GSE_simd::n1 = n1;
 }
 
-double GSE_simd::getN1() {
-	return n1;
+double GSE_simd::get_n1() {
+	return GSE_simd::n1;
 }
 
-void GSE_simd::setN2(double n) {
-	n2 = n;
+void GSE_simd::set_n2(double n2) {
+	GSE_simd::n2 = n2;
 }
 
-double GSE_simd::getN2() {
-	return n2;
+double GSE_simd::get_n2() {
+	return GSE_simd::n2;
 }
 
-void GSE_simd::setN3(double n) {
-	n3 = n;
+void GSE_simd::set_n3(double n3) {
+	GSE_simd::n3 = n3;
 }
 
-double GSE_simd::getN3() {
-	return n3;
+double GSE_simd::get_n3() {
+	return GSE_simd::n3;
 }
 
-void GSE_simd::setNd(int n) {
-	nd = n;
+void GSE_simd::set_nd(int nd) {
+	GSE_simd::nd = nd;
 }
 
-int GSE_simd::getNd() {
-	return nd;
+int GSE_simd::get_nd() {
+	return GSE_simd::nd;
+}
+
+void GSE_simd::set_tauB(double tauB) {
+	GSE_simd::tauB = tauB;
+}
+
+double GSE_simd::get_tauB() {
+	return GSE_simd::tauB;
 }

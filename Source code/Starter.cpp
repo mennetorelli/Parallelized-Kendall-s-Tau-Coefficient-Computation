@@ -34,17 +34,17 @@ void Starter::init() {
 
 	if (method == 1) {
 		Naive naive;
-		naive.calculate_tau_a(elements, num_threads);
+		naive.naive_algorithm(elements, num_threads);
 	}
 
 	if (method == 2) {
 		GSE gse;
-		gse.calculate_tau_b(elements, num_threads);
+		gse.GSE_algorithm(elements, num_threads);
 	}
 
 	if (method == 3) {
 		GSE_simd gse_simd;
-		gse_simd.calculate_tau_b(elements, num_threads);
+		gse_simd.GSE_algorithm(elements, num_threads);
 	}
 }
 

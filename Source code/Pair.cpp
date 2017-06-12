@@ -8,21 +8,20 @@ Pair::Pair(double first, double second)
 
 Pair::~Pair()
 {
-
 }
 
 void Pair::setFirst(double n) {
-	first = n;
-}
-
-void Pair::setSecond(double n) {
-	second = n;
+	Pair::first = n;
 }
 
 double Pair::getFirst() {
-	return first;
+	return Pair::first;
+}
+
+void Pair::setSecond(double n) {
+	Pair::second = n;
 }
 
 double Pair::getSecond() {
-	return second;
+	return Pair::second;
 }
