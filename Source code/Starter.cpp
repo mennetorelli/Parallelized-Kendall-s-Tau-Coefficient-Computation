@@ -52,13 +52,16 @@ void Starter::init() {
 void Starter::generate_input_file() {
 	srand(time(NULL));
 	int vector_size;
+	int range;
 	cout << "Insert vector size: ";
 	cin >> vector_size;
+	cout << "Insert range: ";
+	cin >> range;
 
 	cout << "Generating a new file..." << endl;
 	ofstream file("input.txt");
 	for (int i = 0; i < vector_size; i++) {
-		int value = rand() % 100000 + 1;
+		int value = rand() % range + 1;
 		if (file.is_open())
 		{
 			file << value << " ";
@@ -66,7 +69,7 @@ void Starter::generate_input_file() {
 	}
 	file << endl;
 	for (int i = 0; i < vector_size; i++) {
-		int value = rand() % 100000 + 1;
+		int value = rand() % range + 1;
 		if (file.is_open())
 		{
 			file << value << " ";
