@@ -23,7 +23,7 @@ public:
 
 	void naive_algorithm(vector<Pair> &input, int num_threads);
 
-	void set_tauA(int tauA);
+	void set_tauA(double tauA);
 	double get_tauA();
 
 private:

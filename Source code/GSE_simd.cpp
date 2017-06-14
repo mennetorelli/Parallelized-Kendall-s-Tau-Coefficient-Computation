@@ -173,11 +173,21 @@ void GSE_simd::step3_divide(vector<Pair> &input, int n) {
 	#pragma omp parallel reduction(+:nd) 
 	{
 		for (int s = 1; s < n; s *= 2) {
-			#pragma omp for simd
+			int l_values[10000];
+			int m_values[10000];
+			int r_values[10000];
+			int i = 0;
+			#pragma omp for
 			for (int l = 0; l < n; l += 2 * s) {
-				int m = min(l + s, n);
-				int r = min(l + 2 * s, n);
-				nd += GSE_simd::step3_merge(input, buffer, l, m, r);
+				l_values[i] = l;
+				m_values[i] = min(l + s, n);
+				r_values[i] = min(l + 2 * s, n);
+				i++;
+			}
+
+			for (int j = 0; j < 10000; j++) {
+				if (l_values[j] != 0)
+					nd += GSE_simd::step3_merge(input, buffer, l_values[j], m_values[j], r_values[j]);
 			}
 			#pragma omp master
 			swap(input, buffer);
@@ -213,7 +223,7 @@ void GSE_simd::GSE_algorithm(vector<Pair> &input, int num_threads) {
 	omp_set_num_threads(num_threads);
 	// Enable nested parallelism
 	omp_set_nested(1);
-	omp_set_max_active_levels(num_threads);
+	//omp_set_max_active_levels(num_threads);
 #endif
 
 	double overall_start_clock = omp_get_wtime();

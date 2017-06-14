@@ -213,7 +213,7 @@ void GSE::GSE_algorithm(vector<Pair> &input, int num_threads) {
 	omp_set_num_threads(num_threads);
 	// Enable nested parallelism
 	omp_set_nested(1);
-	omp_set_max_active_levels(num_threads);
+	//omp_set_max_active_levels(num_threads);
 #endif
 
 	double overall_start_clock = omp_get_wtime();

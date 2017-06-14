@@ -50,7 +50,7 @@ void Naive::naive_algorithm(vector<Pair> &input, int num_threads) {
 	system("pause");
 }
 
-void Naive::set_tauA(int tauA) {
+void Naive::set_tauA(double tauA) {
 	Naive::tauA = tauA;
 }
 
