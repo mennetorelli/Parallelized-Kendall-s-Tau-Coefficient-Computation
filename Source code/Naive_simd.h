@@ -7,16 +7,16 @@
 #include <vector>
 #include <algorithm>
 
-#ifndef NAIVE_H
-#define NAIVE_H
+#ifndef NAIVE_SIMD_H
+#define NAIVE_SIMD_H
 
 using namespace std;
 
-class Naive
+class Naive_simd
 {
 public:
-	Naive();
-	~Naive();
+	Naive_simd();
+	~Naive_simd();
 
 	int calc_sign(int v);
 	void tauA_computation(vector<int> &u, vector<int> &v, int n);
@@ -27,4 +27,4 @@ private:
 	double tauA;
 };
 
-#endif //NAIVE_H
+#endif //NAIVE_SIMD_H

@@ -131,12 +131,12 @@ void GSE_simd::step4_scan(vector<Pair> &elements) {
 
 		// sets the parameters and restarts the counters
 		else {
-			set_n2(get_n2() + (double)ni*(ni - 1) / 2);
+			set_n2(get_n2() + (double) ni*(ni - 1) / 2);
 			ni = 1;
 		}
 	}
 
-	set_n2(get_n2() + (double)ni*(ni - 1) / 2);
+	set_n2(get_n2() + (double) ni*(ni - 1) / 2);
 }
 
 /**
@@ -172,11 +172,16 @@ void GSE_simd::step3_divide(vector<Pair> &input, int n) {
 	int nd = 0;
 	#pragma omp parallel reduction(+:nd) 
 	{
+		int c = n / 2 + n % 2;
 		for (int s = 1; s < n; s *= 2) {
-			int l_values[10000];
-			int m_values[10000];
-			int r_values[10000];
+			int *l_values;
+			int *m_values;
+			int *r_values;
+			l_values = (int *)malloc(sizeof(int) * c);
+			m_values = (int *)malloc(sizeof(int) * c);
+			r_values = (int *)malloc(sizeof(int) * c);
 			int i = 0;
+			
 			#pragma omp for
 			for (int l = 0; l < n; l += 2 * s) {
 				l_values[i] = l;
@@ -184,17 +189,22 @@ void GSE_simd::step3_divide(vector<Pair> &input, int n) {
 				r_values[i] = min(l + 2 * s, n);
 				i++;
 			}
-
-			for (int j = 0; j < 10000; j++) {
-				if (l_values[j] != 0)
-					nd += GSE_simd::step3_merge(input, buffer, l_values[j], m_values[j], r_values[j]);
+			
+			for (int j = 0; j < c; j++) {
+				nd += GSE_simd::step3_merge(input, buffer, l_values[j], m_values[j], r_values[j]);
 			}
+			c = (c - n % 2) * 2 + c % 2;
+
 			#pragma omp master
 			swap(input, buffer);
 			#pragma omp barrier
 		}
 	}
 	GSE_simd::set_nd(nd);
+	for (int i = 0; i < input.size(); i++) {
+		cout << "(" << input[i].getFirst() << "," << input[i].getSecond() << ") ";
+	}
+	cout << "\n" << endl;
 }
 
 /**

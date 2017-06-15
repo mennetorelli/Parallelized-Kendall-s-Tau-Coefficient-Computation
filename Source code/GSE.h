@@ -28,22 +28,7 @@ public:
 
 	void step5_tauB_computation(int n, double n1, double n2, double n3, int nd);
 
-	void GSE_algorithm(vector<Pair> &input, int num_threads);
-
-	void set_n1(double n1);
-	double get_n1();
-
-	void set_n2(double n2);
-	double get_n2();
-
-	void set_n3(double n3);
-	double get_n3();
-
-	void set_nd(int nd);
-	int get_nd();
-
-	void set_tauB(double tauB);
-	double get_tauB();
+	void GSE_algorithm(vector<int> &u, vector<int> &v, int n, int num_threads);
 
 private:
 	double n1, n2, n3, tauB;

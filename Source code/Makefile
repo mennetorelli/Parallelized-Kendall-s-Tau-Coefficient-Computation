@@ -1,6 +1,6 @@
-CXXFLAGS += -Wall -std=c++11 -fopenmp -O3 -march=native
+CXXFLAGS += -Wall -std=c++11 -fopenmp -O2 -march=native  -fdump-tree-vect-all
 EXE = KendallTau
-OBJS = Starter.o Pair.o Naive.o GSE.o GSE_simd.o
+OBJS = Starter.o Pair.o Naive.o GSE.o Naive_simd.o
 
 .DEFAULT_GOAL = all
 
@@ -17,7 +17,7 @@ Starter.o: Starter.h
 Pair.o: Pair.h
 Naive.o: Naive.h
 GSE.o: GSE.h
-GSE_simd.o: GSE_simd.h
+Naive_simd.o: Naive_simd.h
 
 clean:
 	$(RM) *.o

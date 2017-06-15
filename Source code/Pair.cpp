@@ -1,6 +1,6 @@
 #include "Pair.h"
 
-Pair::Pair(double first, double second)
+Pair::Pair(int first, int second)
 {
 	setFirst(first);
 	setSecond(second);
@@ -10,18 +10,18 @@ Pair::~Pair()
 {
 }
 
-void Pair::setFirst(double n) {
+void Pair::setFirst(int n) {
 	Pair::first = n;
 }
 
-double Pair::getFirst() {
+int Pair::getFirst() {
 	return Pair::first;
 }
 
-void Pair::setSecond(double n) {
+void Pair::setSecond(int n) {
 	Pair::second = n;
 }
 
-double Pair::getSecond() {
+int Pair::getSecond() {
 	return Pair::second;
 }

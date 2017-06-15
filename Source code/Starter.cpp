@@ -11,7 +11,8 @@ Starter::~Starter()
 
 
 void Starter::init() {
-	vector<Pair> elements;
+	vector<vector<int>> input;
+	vector<int> u, v;
 
 	string input_choice;
 	cout << "Generate new input file? (y/n) ";
@@ -19,13 +20,12 @@ void Starter::init() {
 	if (input_choice == "y") {
 		Starter::generate_input_file();
 	}
-	Starter::read_input_file(elements);
-
+	int n = Starter::read_input_file(input, u, v);
 
 	int method;
 	int num_threads;
 	cout << endl;
-	cout << "Select method: 1) naive, 2) GSE, 3) GSE_simd ";
+	cout << "Select method: 1) Naive, 2) GSE, 3) Naive_simd ";
 	cin >> method;
 	cout << "insert number of threads: ";
 	cin >> num_threads;
@@ -34,17 +34,17 @@ void Starter::init() {
 
 	if (method == 1) {
 		Naive naive;
-		naive.naive_algorithm(elements, num_threads);
+		naive.naive_algorithm(u, v, n, num_threads);
 	}
 
 	if (method == 2) {
 		GSE gse;
-		gse.GSE_algorithm(elements, num_threads);
+		gse.GSE_algorithm(u, v, n, num_threads);
 	}
 
 	if (method == 3) {
-		GSE_simd gse_simd;
-		gse_simd.GSE_algorithm(elements, num_threads);
+		Naive_simd naive_simd;
+		naive_simd.naive_algorithm(u, v, n, num_threads);
 	}
 }
 
@@ -60,30 +60,24 @@ void Starter::generate_input_file() {
 
 	cout << "Generating a new file..." << endl;
 	ofstream file("input.txt");
-	for (int i = 0; i < vector_size; i++) {
-		int value = rand() % range + 1;
-		if (file.is_open())
-		{
-			file << value << " ";
+	for (int i = 0; i < 2; i++) {
+		for (int i = 0; i < vector_size; i++) {
+			int value = rand() % range + 1;
+			if (file.is_open())
+			{
+				file << value << " ";
+			}
 		}
+		file << endl;
 	}
-	file << endl;
-	for (int i = 0; i < vector_size; i++) {
-		int value = rand() % range + 1;
-		if (file.is_open())
-		{
-			file << value << " ";
-		}
-	}
-	file << endl;
 	file.close();
 }
 
-void Starter::read_input_file(vector<Pair> &elements) {
+int Starter::read_input_file(vector<vector<int>> &input, vector<int> &u, vector<int> &v) {
 	cout << "Reading data from file..." << endl;
 	string line;
 	ifstream file("input.txt");
-	vector<vector<int>> vectors;
+	
 	if (file.is_open())
 	{
 		while (getline(file, line))
@@ -94,14 +88,17 @@ void Starter::read_input_file(vector<Pair> &elements) {
 			while (getline(line_stream, token, ' ')) {
 				vector.insert(vector.end(), atoi(token.c_str()));
 			}
-			vectors.insert(vectors.end(), vector);
+			input.insert(input.end(), vector);
 		}
 	}
 	file.close();
 
-	for (int i = 0; i < vectors[0].size(); i++) {
-		elements.insert(elements.end(), Pair(vectors[0].at(i), vectors[1].at(i)));
+	int n = input[0].size();
+	for (int i = 0; i < n; i++) {
+		u.insert(u.end(), input[0][i]);
+		v.insert(v.end(), input[1][i]);
 	}
+	return n;
 }
 
 

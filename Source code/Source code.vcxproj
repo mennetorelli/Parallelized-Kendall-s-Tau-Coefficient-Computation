@@ -114,6 +114,7 @@
   <ItemGroup>
     <ClCompile Include="GSE_simd.cpp" />
     <ClCompile Include="Naive.cpp" />
+    <ClCompile Include="Naive_simd.cpp" />
     <ClCompile Include="Pair.cpp" />
     <ClCompile Include="Starter.cpp" />
     <ClCompile Include="GSE.cpp" />
@@ -121,6 +122,7 @@
   <ItemGroup>
     <ClInclude Include="GSE_simd.h" />
     <ClInclude Include="Naive.h" />
+    <ClInclude Include="Naive_simd.h" />
     <ClInclude Include="Pair.h" />
     <ClInclude Include="Starter.h" />
     <ClInclude Include="GSE.h" />

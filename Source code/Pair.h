@@ -3,14 +3,14 @@
 class Pair
 {
 public:
-	Pair(double first, double second);
+	Pair(int first, int second);
 	~Pair();
 
-	void setFirst(double n);
-	double getFirst();
+	void setFirst(int n);
+	int getFirst();
 	
-	void setSecond(double n);
-	double getSecond();
+	void setSecond(int n);
+	int getSecond();
 
 private:
 	double first;

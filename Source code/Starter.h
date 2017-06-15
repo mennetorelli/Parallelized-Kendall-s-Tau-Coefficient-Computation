@@ -4,6 +4,7 @@
 #include "Naive.h"
 #include "GSE.h"
 #include "GSE_simd.h"
+#include "Naive_simd.h"
 #include <vector>
 #include <omp.h>
 #include <iostream>
@@ -24,6 +25,6 @@ public:
 
 	void init();
 	void generate_input_file();
-	void read_input_file(vector<Pair> &elements);
+	int read_input_file(vector<vector<int>> &elements, vector<int> &u, vector<int> &v);
 };
 
