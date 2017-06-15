@@ -95,8 +95,7 @@ void GSE::step2_scan(vector<Pair> &elements) {
 			ni++;
 
 			// counts the tied elements
-			if (elements[i].getSecond() == elements[i - 1].getSecond() &&
-				elements[i - 1].getFirst() == elements[i - 1].getSecond())
+			if (elements[i].getSecond() == elements[i - 1].getSecond())
 				wi++;
 			// sets the parameters and restarts the counters
 			else {
