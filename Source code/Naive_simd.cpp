@@ -10,10 +10,16 @@ Naive_simd::~Naive_simd()
 }
 
 
+/**
+  Returns 1 if the sign is positive, -1 if negative, 0 otherwise
+*/
 int Naive_simd::calc_sign(int v) {
 	return (v > 0) - (v < 0);
 }
 
+/**
+  Compares pairwise the joint elements in the two vectors
+*/
 void Naive_simd::tauA_computation(vector<int> &u, vector<int> &v, int n) {
 	int num = 0;
 	#pragma omp parallel for reduction(+:num)
@@ -29,6 +35,9 @@ void Naive_simd::tauA_computation(vector<int> &u, vector<int> &v, int n) {
 	Naive_simd::tauA = result;
 }
 
+/**
+  Manages the steps of the algorithm
+*/
 void Naive_simd::naive_algorithm(vector<int> &u, vector<int> &v, int n, int num_threads) {
 
 #ifdef _OPENMP

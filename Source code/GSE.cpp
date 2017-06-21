@@ -90,21 +90,21 @@ void GSE::step2_scan(vector<Pair> &elements) {
 	int wi = 1;
 
 	for (int i = 1; i < elements.size(); i++) {
-		// counts the quantity of elements in each group
+		// Counts the quantity of tied first elements in each group
 		if (elements[i].getFirst() == elements[i - 1].getFirst()) {
 			ni++;
 
-			// counts the tied elements
+			// counts the tied couples
 			if (elements[i].getSecond() == elements[i - 1].getSecond())
 				wi++;
-			// sets the parameters and restarts the counters
+			// Sets the parameters and restarts the counters
 			else {
 				GSE::n3 += (double) wi * (wi - 1) / 2;
 				wi = 1;
 			}
 		}
 
-		// sets the parameters and restarts the counters
+		// Sets the parameters and restarts the counters
 		else {
 			GSE::n1 += (double) ni * (ni - 1) / 2;
 			GSE::n3 += (double) wi * (wi - 1) / 2;
@@ -123,7 +123,7 @@ void GSE::step2_scan(vector<Pair> &elements) {
 void GSE::step4_scan(vector<Pair> &elements) {
 	int ni = 1;
 
-	// counts the quantity of elements in each group
+	// counts the quantity of tied second elements in each group
 	for (int i = 1; i < elements.size(); i++) {
 		if (elements[i].getSecond() == elements[i - 1].getSecond()) ni++;
 
