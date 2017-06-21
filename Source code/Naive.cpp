@@ -9,11 +9,16 @@ Naive::~Naive()
 {
 }
 
-
+/**
+  Returns 1 if the sign is positive, -1 if negative, 0 otherwise
+*/
 int Naive::calc_sign(int v) {
 	return (v > 0) - (v < 0);
 }
 
+/**
+  Compares pairwise the joint elements in the two vectors
+*/
 void Naive::tauA_computation(vector<int> &u, vector<int> &v, int n) {
 	int num = 0;
 	#pragma omp parallel for reduction(+:num)
@@ -28,6 +33,9 @@ void Naive::tauA_computation(vector<int> &u, vector<int> &v, int n) {
 	Naive::tauA = result;
 }
 
+/**
+  Manages the steps of the algorithm
+*/
 void Naive::naive_algorithm(vector<int> &u, vector<int> &v, int n, int num_threads) {
 
 #ifdef _OPENMP
